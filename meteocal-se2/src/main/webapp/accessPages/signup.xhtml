@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Sign Up</title>
+    </h:head>
+    <h:body>
+        <h:form id="signUpForm">
+            <p:panel header="Sign Up">
+                <h:panelGrid columns="2" columnClasses="rightAlign, leftAlign">
+                    <h:outputLabel for="username" value="Username:"></h:outputLabel>
+                    <h:inputText id="username"
+                                 label="Username"
+                                 required="true"
+                                 value="todo">
+                        <f:validateLength minimum="2" maximum="20"></f:validateLength>
+                    </h:inputText>
+                    <h:outputLabel for="password" value="Password:"></h:outputLabel>
+                    <h:inputSecret id="password"
+                                   label="Password"
+                                   required="true"
+                                   value="todo">
+                        <f:validateLength minimum="8"></f:validateLength>
+                    </h:inputSecret>
+                    <h:outputLabel for="confirmPassword" value="Confirm password:"></h:outputLabel>
+                    <h:inputSecret id="confirmPassword"
+                                   label="Confirm password"
+                                   required="true"
+                                   value="todo">
+                        <f:validateLength minimum="8"></f:validateLength>
+                    </h:inputSecret>
+                    <h:panelGroup></h:panelGroup>
+                    <h:commandButton id="submit"
+                                     action="todo"
+                                     value="Sign up">
+                    </h:commandButton>
+                </h:panelGrid>
+            </p:panel>
+            <h:messages style="color: red"></h:messages>
+        </h:form>
+    </h:body>
+</html>
+
