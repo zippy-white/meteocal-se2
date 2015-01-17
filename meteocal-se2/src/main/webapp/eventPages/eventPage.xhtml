@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Event page</title>
+    </h:head>
+    <h:body>
+        <h:form id="eventDetails">
+            <p:panel header="Event details">
+                <h:panelGrid columns="2" columnClasses="rightAlign, leftAlign">
+
+                    <p:outputLabel for="name" value="Name:"></p:outputLabel>
+                    <p:outputLabel id="name" value="todo"></p:outputLabel>
+
+                    <p:outputLabel for="description" value="Description:"></p:outputLabel>
+                    <p:outputLabel id="description" value="todo"></p:outputLabel>
+
+                    <p:outputLabel for="type" value="Type:"></p:outputLabel>
+                    <p:outputLabel id="type" value="todo"></p:outputLabel>
+
+                    <p:outputLabel for="location" value="Location:"></p:outputLabel>
+                    <p:outputLabel id="location" value="todo"></p:outputLabel>
+
+                    <p:outputLabel for="date" value="Date:" />
+                    <p:outputLabel id="date" value="todo"></p:outputLabel>
+
+                    <p:outputLabel for="startingTime" value="Starting time:" />
+                    <p:outputLabel id="startingTime" value="todo"></p:outputLabel>
+
+                    <p:outputLabel for="endingTime" value="Ending time:" />
+                    <p:outputLabel id="endingTime" value="todo"></p:outputLabel>
+
+                    <p:outputLabel for="guests" value="Invited users:"></p:outputLabel>
+                    <p:outputLabel id="guests" value="todo"></p:outputLabel>
+
+                    <p:outputLabel for="participants" value="Participants:"></p:outputLabel>
+                    <p:outputLabel id="participants" value="todo"></p:outputLabel>
+
+                    <p:outputLabel for="weather" value="Weather:"></p:outputLabel>
+                    <p:outputLabel id="weather" value="todo"></p:outputLabel>
+                    
+                    <h:panelGroup/><h:panelGroup/><h:panelGroup/><h:panelGroup/>
+
+                    <p:link id="update"
+                            outcome="/eventPages/updateEvent"
+                            value="Update event">
+                    </p:link>
+                    
+                    <h:panelGroup/>
+                    
+                    <p:link id="delete"
+                            outcome="/eventPages/deleteEvent"
+                            value="Delete event">
+                    </p:link>
+
+                </h:panelGrid>
+            </p:panel>
+            <h:messages style="color: red"></h:messages>
+        </h:form>
+    </h:body>
+</html>
+
