@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Update event</title>
+    </h:head>
+    <h:body>
+        <h:form id="eventDetails">
+            <p:panel header="Event details">
+                <h:panelGrid columns="2" columnClasses="rightAlign, leftAlign">
+
+                    <p:outputLabel for="name" value="Name:"></p:outputLabel>
+                    <p:inputText id="name"
+                                 label="Name"
+                                 required="true"
+                                 value="todo">
+                        <f:validateLength minimum="2" maximum="20"></f:validateLength>
+                    </p:inputText>
+
+                    <p:outputLabel for="description" value="Description:"></p:outputLabel>
+                    <p:inputTextarea id="description"
+                                     rows="3" cols="30" counter="display" 
+                                     maxlength="140"
+                                     value="todo"
+                                     counterTemplate="{0} characters remaining."/>
+                    <h:panelGroup></h:panelGroup>
+                    <h:outputText id="display" />
+
+                    <h:panelGroup></h:panelGroup>
+                    
+                    <p:commandButton id="submit"
+                                     action="todo"
+                                     value="Update event">
+                    </p:commandButton>
+                </h:panelGrid>
+            </p:panel>
+            <h:messages style="color: red"></h:messages>
+        </h:form>
+    </h:body>
+</html>
+
