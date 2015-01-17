@@ -7,8 +7,14 @@ package it.polimi.se2.meteocal.gui.access;
 
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 
 /**
+ * Backing bean for the login page. It allows the user to login to the
+ * application given a valid combination of username and a password.
  *
  * @author edo
  */
@@ -18,8 +24,27 @@ public class LoginBean {
 
     private String username;
     private String password;
-    
+
     public LoginBean() {
+    }
+
+    /**
+     * Performs the login operation.
+     *
+     * @return the personal page if the user logged in successfully, null
+     * otherwise
+     */
+    public String login() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
+
+        try {
+            request.login(this.username, this.password);
+            return "/personalPages/personalPage";
+        } catch (ServletException e) {
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login failed", "Login failed"));
+            return null;
+        }
     }
 
     public String getUsername() {
@@ -37,5 +62,5 @@ public class LoginBean {
     public void setPassword(String password) {
         this.password = password;
     }
-    
+
 }
