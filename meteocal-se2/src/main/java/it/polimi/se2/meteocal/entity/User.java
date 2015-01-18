@@ -6,6 +6,7 @@
 package it.polimi.se2.meteocal.entity;
 
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -25,6 +26,7 @@ public class User implements Serializable {
     @GeneratedValue
     private Long id;
     
+    @Column(unique = true)
     @NotNull(message = "Username must not be empty")
     @Pattern(regexp = "^[a-zA-Z0-9_]+$", 
             message = "Username may only contain alphanumeric characters and _")
