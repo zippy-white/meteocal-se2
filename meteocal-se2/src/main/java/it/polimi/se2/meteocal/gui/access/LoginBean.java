@@ -5,6 +5,8 @@
  */
 package it.polimi.se2.meteocal.gui.access;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
@@ -21,6 +23,8 @@ import javax.servlet.http.HttpServletRequest;
 @Named(value = "loginBean")
 @RequestScoped
 public class LoginBean {
+    
+    private static final Logger logger = Logger.getLogger("loginBean");
 
     private String username;
     private String password;
@@ -43,6 +47,7 @@ public class LoginBean {
             return "/personalPages/personalPage";
         } catch (ServletException e) {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login failed", "Login failed"));
+            logger.log(Level.SEVERE,"Login Failed");
             return null;
         }
     }
