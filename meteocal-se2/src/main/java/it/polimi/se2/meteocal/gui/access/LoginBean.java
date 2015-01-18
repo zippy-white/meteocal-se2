@@ -15,7 +15,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * Backing bean for the login page. It allows the user to login to the
+ * JSF managed bean for the login page. It allows the user to login to the
  * application given a valid combination of username and a password.
  *
  * @author edo
@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 @Named(value = "loginBean")
 @RequestScoped
 public class LoginBean {
-    
+
     private static final Logger logger = Logger.getLogger("loginBean");
 
     private String username;
@@ -47,7 +47,7 @@ public class LoginBean {
             return "/personalPages/personalPage";
         } catch (ServletException e) {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login failed", "Login failed"));
-            logger.log(Level.SEVERE,"Login Failed");
+            logger.log(Level.SEVERE, "Login Failed");
             return null;
         }
     }
