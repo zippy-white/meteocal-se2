@@ -5,6 +5,7 @@
  */
 package it.polimi.se2.meteocal.entity;
 
+import it.polimi.se2.meteocal.utilities.PasswordEncrypter;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -59,8 +60,7 @@ public class User implements Serializable {
     }
 
     public void setPassword(String password) {
-        //TODO encrypt password
-        this.password = password;
+        this.password = PasswordEncrypter.encryptPassword(password);
     }
 
     public String getGroupName() {
