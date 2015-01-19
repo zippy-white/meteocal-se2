@@ -5,6 +5,7 @@
  */
 package it.polimi.se2.meteocal.entity;
 
+import it.polimi.se2.meteocal.enums.WeatherCondition;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
@@ -59,8 +60,7 @@ public class Event implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date endingTime;
 
-    //TODO
-    private String weather;
+    private WeatherCondition weather;
 
     /*
      Relationships
@@ -169,11 +169,11 @@ public class Event implements Serializable {
         this.endingTime = endingTime;
     }
 
-    public String getWeather() {
+    public WeatherCondition getWeather() {
         return weather;
     }
 
-    public void setWeather(String weather) {
+    public void setWeather(WeatherCondition weather) {
         this.weather = weather;
     }
 

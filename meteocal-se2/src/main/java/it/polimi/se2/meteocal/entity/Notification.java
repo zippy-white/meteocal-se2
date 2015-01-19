@@ -5,6 +5,8 @@
  */
 package it.polimi.se2.meteocal.entity;
 
+import it.polimi.se2.meteocal.enums.NotificationStatus;
+import it.polimi.se2.meteocal.enums.NotificationType;
 import java.io.Serializable;
 import java.util.Set;
 import javax.persistence.Entity;
@@ -32,10 +34,9 @@ public class Notification implements Serializable {
     @GeneratedValue
     private Long id;
 
-    //TODO enumerate instead of string
-    private String type;
+    private NotificationType type;
 
-    private String status;
+    private NotificationStatus status;
 
     /*
      Relationships
@@ -62,19 +63,19 @@ public class Notification implements Serializable {
         this.id = id;
     }
 
-    public String getType() {
+    public NotificationType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(NotificationType type) {
         this.type = type;
     }
 
-    public String getStatus() {
+    public NotificationStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(NotificationStatus status) {
         this.status = status;
     }
 
