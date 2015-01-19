@@ -6,7 +6,11 @@
 package it.polimi.se2.meteocal.enums;
 
 /**
- *Enum with all the possible states for a Notification
+ *Enum with all the possible states for a Notification.
+ * Pending: the user has not read the notification yet
+ * Read: the user has read a non-invite notification
+ * Accepted: the user has accepted an invite
+ * Declined: the user has declined an invite
  * @author edo
  */
 public enum NotificationStatus {

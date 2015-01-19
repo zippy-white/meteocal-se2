@@ -6,7 +6,7 @@
 package it.polimi.se2.meteocal.enums;
 
 /**
- *
+ *Enum for all the possible weather conditions supported by the system.
  * @author edo
  */
 public enum WeatherCondition {

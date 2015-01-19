@@ -6,7 +6,12 @@
 package it.polimi.se2.meteocal.enums;
 
 /**
- *Enum for the possible types of a Notification
+ *Enum for the possible types of a Notification.
+ * Simple: basic notification
+ * Invite: a user has been invited to an event
+ * Update: an event has been updated
+ * Delete: an event has been deleted
+ * Weather: forecast of bad weather for an event
  * @author edo
  */
 public enum NotificationType {
