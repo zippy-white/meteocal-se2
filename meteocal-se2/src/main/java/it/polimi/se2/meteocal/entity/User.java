@@ -7,37 +7,85 @@ package it.polimi.se2.meteocal.entity;
 
 import it.polimi.se2.meteocal.utilities.PasswordEncrypter;
 import java.io.Serializable;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 /**
- *Users entity class used to map to the database.
+ * Users entity class used to map to the database.
+ *
  * @author edo
  */
 @Entity(name = "USERS")
 public class User implements Serializable {
-    
+
     private static final long serialVersionUID = 1L;
-    
+
+    /*
+     Attributes
+     */
     @Id
     @GeneratedValue
     private Long id;
-    
+
     @Column(unique = true)
     @NotNull(message = "Username must not be empty")
-    @Pattern(regexp = "^[a-zA-Z0-9_]+$", 
+    @Pattern(regexp = "^[a-zA-Z0-9_]+$",
             message = "Username may only contain alphanumeric characters and _")
     private String username;
-    
+
     @NotNull(message = "Password must not be empty")
     private String password;
-    
+
     @NotNull(message = "Group name must not be empty")
     private String groupName;
+
+    /*
+     Relationships
+     */
+    /**
+     * Events created by one user
+     */
+    @OneToMany(mappedBy = "owner")
+    private Set<Event> createdEvents;
+
+    /**
+     * Events as invitee
+     */
+    @ManyToMany
+    @JoinTable(
+            name = "INVITED_USERS",
+            joinColumns = {
+                @JoinColumn(name = "UserID", referencedColumnName = "ID")},
+            inverseJoinColumns = {
+                @JoinColumn(name = "EventID", referencedColumnName = "ID")})
+    private Set<Event> invitedToEvents;
+
+    /**
+     * Events as participant
+     */
+    @ManyToMany
+    @JoinTable(
+            name = "ATTENDING_USERS",
+            joinColumns = {
+                @JoinColumn(name = "UserID", referencedColumnName = "ID")},
+            inverseJoinColumns = {
+                @JoinColumn(name = "EventID", referencedColumnName = "ID")})
+    private Set<Event> attendingEvents;
+
+    /**
+     * User notifications
+     */
+    @OneToMany(mappedBy = "recipient")
+    private Set<Notification> notifications;
 
     public Long getId() {
         return id;
@@ -49,6 +97,38 @@ public class User implements Serializable {
 
     public String getUsername() {
         return username;
+    }
+
+    public Set<Notification> getNotifications() {
+        return notifications;
+    }
+
+    public void setNotifications(Set<Notification> notifications) {
+        this.notifications = notifications;
+    }
+
+    public Set<Event> getCreatedEvents() {
+        return createdEvents;
+    }
+
+    public void setCreatedEvents(Set<Event> createdEvents) {
+        this.createdEvents = createdEvents;
+    }
+
+    public Set<Event> getInvitedToEvents() {
+        return invitedToEvents;
+    }
+
+    public void setInvitedToEvents(Set<Event> invitedToEvents) {
+        this.invitedToEvents = invitedToEvents;
+    }
+
+    public Set<Event> getAttendingEvents() {
+        return attendingEvents;
+    }
+
+    public void setAttendingEvents(Set<Event> attendingEvents) {
+        this.attendingEvents = attendingEvents;
     }
 
     public void setUsername(String username) {
@@ -70,7 +150,5 @@ public class User implements Serializable {
     public void setGroupName(String groupName) {
         this.groupName = groupName;
     }
-    
-    
-    
+
 }
