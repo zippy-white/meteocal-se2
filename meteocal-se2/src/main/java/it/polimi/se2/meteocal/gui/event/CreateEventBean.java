@@ -25,6 +25,11 @@ public class CreateEventBean {
 
     public CreateEventBean() {
     }
+    
+    
+    public String createEvent() {
+        return "";
+    }
 
     public Event getEvent() {
         if (event == null) {
