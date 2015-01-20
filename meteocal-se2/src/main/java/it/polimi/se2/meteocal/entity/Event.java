@@ -5,6 +5,7 @@
  */
 package it.polimi.se2.meteocal.entity;
 
+import it.polimi.se2.meteocal.enums.EventType;
 import it.polimi.se2.meteocal.enums.WeatherCondition;
 import java.io.Serializable;
 import java.util.Date;
@@ -43,7 +44,7 @@ public class Event implements Serializable {
     private String description;
 
     @NotNull(message = "Event's type must not be empty")
-    private String type;
+    private EventType type;
 
     @NotNull(message = "Event's location must not be empty")
     private String location;
@@ -129,12 +130,19 @@ public class Event implements Serializable {
         this.description = description;
     }
 
-    public String getType() {
+    public EventType getType() {
         return type;
     }
 
     public void setType(String type) {
-        this.type = type;
+        switch (type) {
+            case "Indoor":
+                this.type = EventType.INDOOR;
+                break;
+            case "Outdoor":
+                this.type = EventType.OUTDOOR;
+                break;
+        }
     }
 
     public String getLocation() {
