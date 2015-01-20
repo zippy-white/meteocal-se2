@@ -6,6 +6,7 @@
 package it.polimi.se2.meteocal.gui.event;
 
 import it.polimi.se2.meteocal.entity.Event;
+import it.polimi.se2.meteocal.enums.EventType;
 import java.util.logging.Logger;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
@@ -22,6 +23,8 @@ public class CreateEventBean {
     private static final Logger logger = Logger.getLogger("createEventBean");
 
     private Event event;
+    
+    private EventType[] eventTypes;
 
     public CreateEventBean() {
     }
@@ -40,6 +43,10 @@ public class CreateEventBean {
 
     public void setEvent(Event event) {
         this.event = event;
+    }
+    
+    public EventType[] getEventTypes() {
+        return EventType.values();
     }
 
 }
