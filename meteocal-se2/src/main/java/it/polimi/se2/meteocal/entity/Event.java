@@ -134,17 +134,10 @@ public class Event implements Serializable {
         return type;
     }
 
-    public void setType(String type) {
-        switch (type) {
-            case "Indoor":
-                this.type = EventType.INDOOR;
-                break;
-            case "Outdoor":
-                this.type = EventType.OUTDOOR;
-                break;
-        }
+    public void setType(EventType type) {
+        this.type = type;
     }
-
+    
     public String getLocation() {
         return location;
     }
