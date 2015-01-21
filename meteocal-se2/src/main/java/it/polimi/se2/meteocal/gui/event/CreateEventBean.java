@@ -30,6 +30,8 @@ public class CreateEventBean {
     private Event event;
 
     private EventType[] eventTypes;
+    
+    private String guests;
 
     public CreateEventBean() {
     }
@@ -39,6 +41,7 @@ public class CreateEventBean {
      * @return the personal page of the user
      */
     public String createEvent() {
+        //Todo parse guests and add them to event
         evm.saveEvent(event);
         return "/personalPages/personalPage?faces-redirect=true";
     }
@@ -56,6 +59,14 @@ public class CreateEventBean {
 
     public EventType[] getEventTypes() {
         return EventType.values();
+    }
+
+    public String getGuests() {
+        return guests;
+    }
+
+    public void setGuests(String guests) {
+        this.guests = guests;
     }
 
 }
