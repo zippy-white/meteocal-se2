@@ -7,7 +7,9 @@ package it.polimi.se2.meteocal.gui.event;
 
 import it.polimi.se2.meteocal.entity.Event;
 import it.polimi.se2.meteocal.enums.EventType;
+import it.polimi.se2.meteocal.manager.EventManager;
 import java.util.logging.Logger;
+import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 
@@ -22,16 +24,23 @@ public class CreateEventBean {
 
     private static final Logger logger = Logger.getLogger("createEventBean");
 
+    @EJB
+    EventManager evm;
+
     private Event event;
-    
+
     private EventType[] eventTypes;
 
     public CreateEventBean() {
     }
-    
-    
+
+    /**
+     * Create the event
+     * @return the personal page of the user
+     */
     public String createEvent() {
-        return "";
+        evm.saveEvent(event);
+        return "/personalPages/personalPage";
     }
 
     public Event getEvent() {
@@ -44,7 +53,7 @@ public class CreateEventBean {
     public void setEvent(Event event) {
         this.event = event;
     }
-    
+
     public EventType[] getEventTypes() {
         return EventType.values();
     }
