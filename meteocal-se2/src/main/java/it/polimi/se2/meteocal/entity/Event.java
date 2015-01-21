@@ -54,11 +54,11 @@ public class Event implements Serializable {
     private Date eventDate;
 
     @NotNull(message = "Event's starting time must not be empty")
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIME)
     private Date startingTime;
 
     @NotNull(message = "Event's ending time must not be empty")
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIME)
     private Date endingTime;
 
     private WeatherCondition weather;
