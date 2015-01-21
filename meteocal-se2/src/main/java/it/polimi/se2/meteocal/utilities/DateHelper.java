@@ -22,7 +22,7 @@ public class DateHelper {
      * @param rawTime the time part of the date
      * @return the Date set at rawDate day and rawTime hours
      */
-    public Date buildDate(Date rawDate, Date rawTime) {
+    public static Date buildDate(Date rawDate, Date rawTime) {
         Calendar t = Calendar.getInstance();
         rawDate.setHours(rawTime.getHours());
         rawDate.setMinutes(rawTime.getMinutes());
