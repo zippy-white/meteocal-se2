@@ -41,6 +41,14 @@ public class UserManager {
         user.setGroupName(Group.USERS);
         em.persist(user);
     }
+    
+    /**
+     * Update the user record on the DB
+     * @param u the user to update 
+     */
+    public void updateUser(User u) {
+        em.merge(u);
+    }
 
     /**
      *
