@@ -29,4 +29,17 @@ public class DateHelper {
         t.setTime(rawDate);
         return t.getTime();
     }
+    
+    /**
+     * Check if to events, represented by time windows overlap
+     * @param one the first time window
+     * @param two the second time window
+     * @return true if the time windows overlap false otherwise
+     */
+    public static Boolean overlaps(TimeWindow one, TimeWindow two) {
+        return !((one.getStart().before(two.getStart()) &&
+                one.getEnd().before(two.getStart())) ||
+                (one.getStart().after(two.getEnd()) &&
+                one.getEnd().after(two.getEnd())));
+    }
 }
