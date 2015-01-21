@@ -7,6 +7,7 @@ package it.polimi.se2.meteocal.entity;
 
 import it.polimi.se2.meteocal.utilities.PasswordEncrypter;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -107,6 +108,9 @@ public class User implements Serializable {
     }
 
     public Set<Notification> getNotifications() {
+        if (notifications == null) {
+            notifications = new HashSet<>();
+        }
         return notifications;
     }
 
@@ -115,6 +119,9 @@ public class User implements Serializable {
     }
 
     public Set<Event> getCreatedEvents() {
+        if (createdEvents == null) {
+            createdEvents = new HashSet<>();
+        }
         return createdEvents;
     }
 
@@ -123,6 +130,9 @@ public class User implements Serializable {
     }
 
     public Set<Event> getInvitedToEvents() {
+        if (invitedToEvents == null) {
+            invitedToEvents = new HashSet<>();
+        }
         return invitedToEvents;
     }
 
@@ -131,6 +141,9 @@ public class User implements Serializable {
     }
 
     public Set<Event> getAttendingEvents() {
+        if (attendingEvents == null) {
+            attendingEvents = new HashSet<>();
+        }
         return attendingEvents;
     }
 
