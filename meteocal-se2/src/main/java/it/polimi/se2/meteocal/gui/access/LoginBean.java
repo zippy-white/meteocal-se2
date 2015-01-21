@@ -7,10 +7,10 @@ package it.polimi.se2.meteocal.gui.access;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.inject.Named;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
@@ -50,6 +50,19 @@ public class LoginBean {
             logger.log(Level.SEVERE, "Login Failed");
             return null;
         }
+    }
+
+    /**
+     * Authenticates the user given a username and a password
+     *
+     * @param username: the user's username
+     * @param password : the user's password
+     *
+     */
+    public String login(String username, String password) {
+        setUsername(username);
+        setPassword(password);
+        return login();
     }
 
     public String getUsername() {
