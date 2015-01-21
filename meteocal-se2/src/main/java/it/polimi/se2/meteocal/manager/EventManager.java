@@ -6,6 +6,7 @@
 package it.polimi.se2.meteocal.manager;
 
 import it.polimi.se2.meteocal.entity.Event;
+import it.polimi.se2.meteocal.entity.User;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -30,7 +31,17 @@ public class EventManager {
      * @param event the event to save
      */
     public void saveEvent(Event event) {
-        event.setOwner(um.getLoggedUser());
+        User owner = um.getLoggedUser();
+        //Add the owner to the event
+        event.setOwner(owner);
+        //Add the owner to the event's participants
+        event.getAttendingUsers().add(owner);
+        //Add the event to the owner's attending events
+        owner.getAttendingEvents().add(event);
+        
+        //TODO INVITE AND NOTIFY
+        //Save event to DB
         em.persist(event);
     }
+
 }
