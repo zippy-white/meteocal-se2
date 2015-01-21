@@ -9,6 +9,7 @@ import it.polimi.se2.meteocal.enums.EventType;
 import it.polimi.se2.meteocal.enums.WeatherCondition;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -179,6 +180,9 @@ public class Event implements Serializable {
     }
 
     public Set<User> getInvitedUsers() {
+        if (invitedUsers == null) {
+            invitedUsers = new HashSet<>();
+        }
         return invitedUsers;
     }
 
@@ -187,6 +191,9 @@ public class Event implements Serializable {
     }
 
     public Set<User> getAttendingUsers() {
+        if (attendingUsers == null) {
+            attendingUsers = new HashSet<>();
+        }
         return attendingUsers;
     }
 
@@ -195,6 +202,9 @@ public class Event implements Serializable {
     }
 
     public Set<Notification> getGeneratedNotifications() {
+        if (generatedNotifications == null) {
+            generatedNotifications = new HashSet<>();
+        }
         return generatedNotifications;
     }
 
