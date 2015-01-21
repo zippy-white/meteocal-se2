@@ -7,9 +7,9 @@ package it.polimi.se2.meteocal.manager;
 
 import it.polimi.se2.meteocal.entity.Group;
 import it.polimi.se2.meteocal.entity.User;
-import java.security.Principal;
+import javax.annotation.Resource;
+import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
-import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -24,16 +24,23 @@ public class UserManager {
     @PersistenceContext
     EntityManager em;
 
-    @Inject
-    Principal principal;
+    @Resource
+    private SessionContext sctx;
 
     public void saveUser(User user) {
         user.setGroupName(Group.USERS);
         em.persist(user);
     }
 
-    public User getLoggerUser() {
-        return em.find(User.class, principal.getName());
+    public User getLoggedUser() {
+        User u = em.createNamedQuery(User.findByUsername, User.class)
+                .setParameter("username", getLoggedUserName())
+                .getSingleResult();
+        return u;
+    }
+
+    public String getLoggedUserName() {
+        return sctx.getCallerPrincipal().getName();
     }
 
 }
