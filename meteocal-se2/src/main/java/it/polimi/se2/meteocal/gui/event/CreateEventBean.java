@@ -40,7 +40,7 @@ public class CreateEventBean {
      */
     public String createEvent() {
         evm.saveEvent(event);
-        return "/personalPages/personalPage";
+        return "/personalPages/personalPage?faces-redirect=true";
     }
 
     public Event getEvent() {
