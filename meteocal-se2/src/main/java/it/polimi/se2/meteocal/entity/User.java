@@ -15,6 +15,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -25,9 +27,14 @@ import javax.validation.constraints.Pattern;
  * @author edo
  */
 @Entity(name = "USERS")
+@NamedQueries({
+    @NamedQuery(name = User.findByUsername,
+            query = "SELECT u FROM USERS u WHERE u.username = :username")
+})
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    public static final String findByUsername = "findByUsername";
 
     /*
      Attributes
