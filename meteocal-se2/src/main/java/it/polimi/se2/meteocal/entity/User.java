@@ -94,6 +94,29 @@ public class User implements Serializable {
      */
     @OneToMany(mappedBy = "recipient")
     private Set<Notification> notifications;
+    
+    /*
+    Methods
+    */
+    public void addAttendingEvent(Event e) {
+        this.getAttendingEvents().add(e);
+    }
+    
+    public void addInvitedToEvent(Event e) {
+        this.getInvitedToEvents().add(e);
+    }
+    
+    public void addCreatedEvent(Event e) {
+        this.getCreatedEvents().add(e);
+    }
+    
+    public void addNotification(Notification n) {
+        this.getNotifications().add(n);
+    }
+    
+    /*
+    Getters and Setters
+    */
 
     public Long getId() {
         return id;
