@@ -16,7 +16,7 @@
                     <p:inputText id="name"
                                  label="Name"
                                  required="true"
-                                 value="todo">
+                                 value="#{createEventBean.event.name}">
                         <f:validateLength minimum="2" maximum="20"></f:validateLength>
                     </p:inputText>
 
@@ -24,45 +24,49 @@
                     <p:inputTextarea id="description"
                                      rows="3" cols="30" counter="display" 
                                      maxlength="140"
-                                     value="todo"
+                                     value="#{createEventBean.event.description}"
                                      counterTemplate="{0} characters remaining."/>
                     <h:panelGroup></h:panelGroup>
                     <h:outputText id="display" />
 
                     <p:outputLabel for="type" value="Type:"></p:outputLabel>
-                    <p:selectOneRadio id="type" value="todo" required="true">
-                        <f:selectItem itemLabel="Outdoor" itemValue="Outdoor"/>
-                        <f:selectItem itemLabel="Indoor" itemValue="Indoor"/>
+                    <p:selectOneRadio id="type" required="true"
+                                      value="#{createEventBean.event.type}">
+                        <f:selectItems value="#{createEventBean.eventTypes}"/>
                     </p:selectOneRadio>
 
                     <p:outputLabel for="location" value="Location:"></p:outputLabel>
                     <p:inputText id="location"
                                  label="Location"
                                  required="true"
-                                 value="todo">
+                                 value="#{createEventBean.event.location}">
                         <f:validateLength maximum="30"></f:validateLength>
                     </p:inputText>
 
                     <p:outputLabel for="date" value="Date:" />
-                    <p:calendar id="date" required="true" mode="inline" mindate="today"/>
+                    <p:calendar id="date" required="true" mindate="today"
+                                value="#{createEventBean.event.eventDate}"/>
 
                     <p:outputLabel for="startingTime" value="Starting time:" />
-                    <p:calendar id="startingTime" required="true" pattern="HH:mm a" mode="inline" timeOnly="true" />
+                    <p:calendar id="startingTime" required="true" pattern="HH:mm a" timeOnly="true"
+                                value="#{createEventBean.event.startingTime}"/>
 
                     <p:outputLabel for="endingTime" value="Ending time:" />
-                    <p:calendar id="endingTime" required="true" pattern="HH:mm a" mode="inline" timeOnly="true" />
+                    <p:calendar id="endingTime" required="true" pattern="HH:mm a" timeOnly="true"
+                                value="#{createEventBean.event.endingTime}" />
 
                     <p:outputLabel for="guests" value="Guests:"></p:outputLabel>
                     <p:inputText id="guests"
                                  label="Guests"
-                                 value="todo">
+                                 value="#{createEventBean.event.invitedUsers}">
                     </p:inputText>
                     <h:panelGroup></h:panelGroup>
                     <p:outputLabel value="Separate guests by comma"/>
 
                     <h:panelGroup></h:panelGroup>
                     <p:commandButton id="submit"
-                                     action="todo"
+                                     update="@all"
+                                     action="#{createEventBean.createEvent()}"
                                      value="Create event">
                     </p:commandButton>
                 </h:panelGrid>
