@@ -15,7 +15,7 @@
                     <p:inputText id="username"
                                  label="Username"
                                  required="true"
-                                 value="#{registrationBean.user.username}">
+                                 value="#{registrationBean.username}">
                         <f:validateLength minimum="2" maximum="20"></f:validateLength>
                     </p:inputText>
                     <p:outputLabel for="password" value="Password:"></p:outputLabel>
@@ -24,7 +24,7 @@
                                    required="true"
                                    feedback="true"
                                    match="confirmPassword"
-                                   value="#{registrationBean.user.password}">
+                                   value="#{registrationBean.password}">
                         <f:validateLength minimum="8"></f:validateLength>
                     </p:password>
                     <p:outputLabel for="confirmPassword" value="Confirm password:"></p:outputLabel>
