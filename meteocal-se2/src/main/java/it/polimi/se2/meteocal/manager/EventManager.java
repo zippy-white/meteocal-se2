@@ -35,13 +35,26 @@ public class EventManager {
         //Add the owner to the event
         event.setOwner(owner);
         //Add the owner to the event's participants
-        event.getAttendingUsers().add(owner);
+        event.addAttendingUser(owner);
+        //Add the event to the owner's created events
+        owner.addCreatedEvent(event);
         //Add the event to the owner's attending events
-        owner.getAttendingEvents().add(event);
-        
-        //TODO INVITE AND NOTIFY
+        owner.addAttendingEvent(event);
         //Save event to DB
         em.persist(event);
+        em.flush();
+        //Update owner. This has to be after event persist for transactions to work!
+        um.updateUser(owner);
+        //Invite Users. This has to be after event persist for transactions to work!
+        inviteUsers(event);
+    }
+
+    private void inviteUsers(Event event) {
+        for (User u : event.getInvitedUsers()) {
+            System.out.println(">>>INVITING USER " + u.getUsername() + " TO EVENT " + event.getName());
+            u.addInvitedToEvent(event);
+            um.updateUser(u);
+        }
     }
 
 }
