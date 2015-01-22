@@ -55,10 +55,7 @@ public class UserManager {
      * @return the logged User object
      */
     public User getLoggedUser() {
-        User u = em.createNamedQuery(User.findByUsername, User.class)
-                .setParameter("username", getLoggedUserName())
-                .getSingleResult();
-        return u;
+        return findUserByName(getLoggedUserName());
     }
 
     /**
@@ -85,6 +82,18 @@ public class UserManager {
             eventList.add(scheduleEvent);
         }
         return eventList;
+    }
+    
+    /**
+     * Finds the User given the username
+     * @param username
+     * @return the User with the given username if it exists
+     */
+    public User findUserByName(String username) {
+        User u = em.createNamedQuery(User.findByUsername, User.class)
+                .setParameter("username", username)
+                .getSingleResult();
+        return u;
     }
 
 }
