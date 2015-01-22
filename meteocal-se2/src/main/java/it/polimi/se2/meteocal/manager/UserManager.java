@@ -15,6 +15,7 @@ import javax.annotation.Resource;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import org.primefaces.model.DefaultScheduleEvent;
 import org.primefaces.model.ScheduleEvent;
@@ -35,16 +36,18 @@ public class UserManager {
 
     /**
      * Save a user in the DB
+     *
      * @param user the new user to add to the DB
      */
     public void saveUser(User user) {
         user.setGroupName(Group.USERS);
         em.persist(user);
     }
-    
+
     /**
      * Update the user record on the DB
-     * @param u the user to update 
+     *
+     * @param u the user to update
      */
     public void updateUser(User u) {
         em.merge(u);
@@ -68,7 +71,8 @@ public class UserManager {
 
     /**
      *
-     * @return the scheduled events that the user will be attending ready to be used by primefaces schedule
+     * @return the scheduled events that the user will be attending ready to be
+     * used by primefaces schedule
      */
     public List<ScheduleEvent> getScheduledEvents() {
         List<ScheduleEvent> eventList = new ArrayList<>();
@@ -83,17 +87,22 @@ public class UserManager {
         }
         return eventList;
     }
-    
+
     /**
      * Finds the User given the username
+     *
      * @param username
-     * @return the User with the given username if it exists
+     * @return the User with the given username if it exists, null otherwise
      */
     public User findUserByName(String username) {
-        User u = em.createNamedQuery(User.findByUsername, User.class)
-                .setParameter("username", username)
-                .getSingleResult();
-        return u;
+        try {
+            User u = em.createNamedQuery(User.findByUsername, User.class)
+                    .setParameter("username", username)
+                    .getSingleResult();
+            return u;
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
 }
