@@ -8,6 +8,9 @@ package it.polimi.se2.meteocal.gui.event;
 import it.polimi.se2.meteocal.entity.Event;
 import it.polimi.se2.meteocal.enums.EventType;
 import it.polimi.se2.meteocal.manager.EventManager;
+import it.polimi.se2.meteocal.manager.UserManager;
+import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
@@ -26,6 +29,9 @@ public class CreateEventBean {
 
     @EJB
     EventManager evm;
+    
+    @EJB
+    UserManager um;
 
     private Event event;
 
@@ -41,7 +47,7 @@ public class CreateEventBean {
      * @return the personal page of the user
      */
     public String createEvent() {
-        //Todo parse guests and add them to event
+        addGuests();
         evm.saveEvent(event);
         return "/personalPages/personalPage?faces-redirect=true";
     }
@@ -67,6 +73,20 @@ public class CreateEventBean {
 
     public void setGuests(String guests) {
         this.guests = guests;
+    }
+    
+    /**
+     * Parse the guest string and build a list of invited users to add to the event
+     */
+    private void addGuests() {
+        List<String> invitedUsernames = Arrays.asList(this.guests.split(", "));
+        for (String username : invitedUsernames) {
+            //Inexistent users and the event creator cannot be invited to the event
+            if (um.findUserByName(username) != null &&
+                    !username.equalsIgnoreCase(um.getLoggedUserName())) {
+                event.addInvitedUser(um.findUserByName(username));
+            }
+        }
     }
 
 }
