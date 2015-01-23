@@ -29,14 +29,14 @@ public class CreateEventBean {
 
     @EJB
     EventManager evm;
-    
+
     @EJB
     UserManager um;
 
     private Event event;
 
     private EventType[] eventTypes;
-    
+
     private String guests;
 
     public CreateEventBean() {
@@ -44,6 +44,7 @@ public class CreateEventBean {
 
     /**
      * Create the event
+     *
      * @return the personal page of the user
      */
     public String createEvent() {
@@ -74,17 +75,20 @@ public class CreateEventBean {
     public void setGuests(String guests) {
         this.guests = guests;
     }
-    
+
     /**
-     * Parse the guest string and build a list of invited users to add to the event
+     * Parse the guest string and build a list of invited users to add to the
+     * event
      */
     private void addGuests() {
-        List<String> invitedUsernames = Arrays.asList(this.guests.split(", "));
-        for (String username : invitedUsernames) {
-            //Inexistent users and the event creator cannot be invited to the event
-            if (um.findUserByName(username) != null &&
-                    !username.equalsIgnoreCase(um.getLoggedUserName())) {
-                event.addInvitedUser(um.findUserByName(username));
+        if (guests != null) {
+            List<String> invitedUsernames = Arrays.asList(this.guests.split(", "));
+            for (String username : invitedUsernames) {
+                //Inexistent users and the event creator cannot be invited to the event
+                if (um.findUserByName(username) != null
+                        && !username.equalsIgnoreCase(um.getLoggedUserName())) {
+                    event.addInvitedUser(um.findUserByName(username));
+                }
             }
         }
     }
