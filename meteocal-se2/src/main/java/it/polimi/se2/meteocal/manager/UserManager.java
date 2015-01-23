@@ -84,6 +84,8 @@ public class UserManager {
             scheduleEvent = new DefaultScheduleEvent(e.getName(),
                     DateHelper.buildDate(e.getEventDate(), e.getStartingTime()),
                     DateHelper.buildDate(e.getEventDate(), e.getEndingTime()));
+            //MUST SET THE ID, NULLPOINTEREXCEPTION IF NOT SET
+            scheduleEvent.setId(e.getId().toString());
             eventsMap.put(scheduleEvent, e);
         }
         return eventsMap;
