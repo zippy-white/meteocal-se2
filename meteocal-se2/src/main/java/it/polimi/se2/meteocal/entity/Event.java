@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -78,13 +79,13 @@ public class Event implements Serializable {
     /**
      * Users invited to an event
      */
-    @ManyToMany(mappedBy = "invitedToEvents")
+    @ManyToMany(mappedBy = "invitedToEvents", fetch = FetchType.EAGER)
     private Set<User> invitedUsers;
 
     /**
      * Users attending an event
      */
-    @ManyToMany(mappedBy = "attendingEvents")
+    @ManyToMany(mappedBy = "attendingEvents", fetch = FetchType.EAGER)
     private Set<User> attendingUsers;
 
     /**
