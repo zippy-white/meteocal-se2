@@ -9,8 +9,8 @@ import it.polimi.se2.meteocal.entity.Event;
 import it.polimi.se2.meteocal.entity.Group;
 import it.polimi.se2.meteocal.entity.User;
 import it.polimi.se2.meteocal.utilities.DateHelper;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import javax.annotation.Resource;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
@@ -70,12 +70,13 @@ public class UserManager {
     }
 
     /**
+     * Get the mapping between ScheduleEvent events (for schedule) and Event
+     * events (for data)
      *
-     * @return the scheduled events that the user will be attending ready to be
-     * used by primefaces schedule
+     * @return the map with ScheduleEvent as keys and Event entities as values
      */
-    public List<ScheduleEvent> getScheduledEvents() {
-        List<ScheduleEvent> eventList = new ArrayList<>();
+    public Map<ScheduleEvent, Event> getEventsMap() {
+        Map<ScheduleEvent, Event> eventsMap = new HashMap<>();
         User u = getLoggedUser();
         ScheduleEvent scheduleEvent;
         //For each event that the user will be attending we build the corrisponding schedule event for display
@@ -83,9 +84,9 @@ public class UserManager {
             scheduleEvent = new DefaultScheduleEvent(e.getName(),
                     DateHelper.buildDate(e.getEventDate(), e.getStartingTime()),
                     DateHelper.buildDate(e.getEventDate(), e.getEndingTime()));
-            eventList.add(scheduleEvent);
+            eventsMap.put(scheduleEvent, e);
         }
-        return eventList;
+        return eventsMap;
     }
 
     /**
