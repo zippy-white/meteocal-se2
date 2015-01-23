@@ -8,12 +8,14 @@
     </h:head>
     <h:body>
         <p:layout fullPage="true">
-            <p:layoutUnit position="north" size="50">
+            <p:layoutUnit position="north" size="60">
                 <p:link outcome="/index" value="Homepage"></p:link>
                 | 
                 <p:link outcome="/eventPages/createEvent" value="Create a new event"></p:link>
-                | 
-                <p:commandLink action="todo" value="Logout"></p:commandLink>
+                |
+                <h:form>
+                    <h:commandLink action="#{loginBean.logout()}" value="Logout"/>
+                </h:form>
             </p:layoutUnit>
 
 
