@@ -48,6 +48,23 @@ public class EventManager {
         //Invite Users. This has to be after event persist for transactions to work!
         inviteUsers(event);
     }
+    
+    /**
+     * Update an event
+     * @param e the event to update
+     */
+    public void updateEvent(Event e) {
+        em.merge(e);
+    }
+
+    /**
+     * Remove an event
+     *
+     * @param e the event to remove
+     */
+    public void removeEvent(Event e) {
+        em.remove(e);
+    }
 
     private void inviteUsers(Event event) {
         for (User u : event.getInvitedUsers()) {
