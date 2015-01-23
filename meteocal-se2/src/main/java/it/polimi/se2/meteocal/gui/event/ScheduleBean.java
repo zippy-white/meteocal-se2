@@ -6,6 +6,7 @@
 package it.polimi.se2.meteocal.gui.event;
 
 import it.polimi.se2.meteocal.entity.Event;
+import it.polimi.se2.meteocal.manager.EventManager;
 import it.polimi.se2.meteocal.manager.UserManager;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -40,7 +41,13 @@ public class ScheduleBean implements Serializable {
 
     @EJB
     private UserManager um;
-
+    
+    @EJB 
+    private EventManager evm;
+    
+    /**
+     * Get events' map for the current user and build the Schedule model
+     */
     @PostConstruct
     public void init() {
         eventsMap = um.getEventsMap();
@@ -48,9 +55,35 @@ public class ScheduleBean implements Serializable {
         eventModel = new DefaultScheduleModel(scheduleEventsList);
     }
 
+    /**
+     * Change event entity based on the event selected on the schedule
+     * @param selectedEvent the event that was clicked
+     */
     public void onEventSelect(SelectEvent selectedEvent) {
         scheduleEvent = (ScheduleEvent) selectedEvent.getObject();
         event = eventsMap.get(scheduleEvent);
+    }
+    
+    /**
+     * Check wether the user viewing the event is the owner of the event
+     * @return true if the user viewing the event is the owner, false otherwise
+     */
+    public Boolean isViewerOwner() {
+        return um.getLoggedUser() == event.getOwner();
+    }
+    
+    /**
+     * Update the event
+     */
+    public void updateEvent() {
+        evm.updateEvent(event);
+    }
+    
+    /**
+     * Delete the event
+     */
+    public void deleteEvent() {
+        evm.removeEvent(event);
     }
 
     public ScheduleModel getEventModel() {
