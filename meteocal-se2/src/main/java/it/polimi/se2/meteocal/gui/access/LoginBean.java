@@ -46,7 +46,7 @@ public class LoginBean {
             request.login(this.username, this.password);
             return "/personalPages/personalPage";
         } catch (ServletException e) {
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login failed", "Login failed"));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login failed.\nAnother user may still be logged in.", "Login failed."));
             logger.log(Level.SEVERE, "Login Failed");
             return null;
         }
@@ -57,12 +57,24 @@ public class LoginBean {
      *
      * @param username: the user's username
      * @param password : the user's password
+     * @return JSF outcome
      *
      */
     public String login(String username, String password) {
         setUsername(username);
         setPassword(password);
         return login();
+    }
+
+    /**
+     * Deauthenticates the currently logged in user.
+     *
+     * @return JSF outcome
+     */
+    public String logout() {
+        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+        logger.log(Level.INFO, "User Logged out");
+        return "/index?faces-redirect=true";
     }
 
     public String getUsername() {
