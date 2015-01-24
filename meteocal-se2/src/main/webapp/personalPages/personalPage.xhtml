@@ -74,12 +74,12 @@
 
                             <p:outputLabel for="startingTime" value="Starting time:" />
                             <p:outputLabel id="startingTime" value="#{scheduleBean.event.startingTime}">
-                                <f:convertDateTime pattern="HH:mm a" />
+                                <f:convertDateTime pattern="HH:mm a" timeZone="GMT+1"/>
                             </p:outputLabel>
 
                             <p:outputLabel for="endingTime" value="Ending time:" />
                             <p:outputLabel id="endingTime" value="#{scheduleBean.event.endingTime}">
-                                <f:convertDateTime pattern="HH:mm a" />
+                                <f:convertDateTime pattern="HH:mm a" timeZone="GMT+1"/>
                             </p:outputLabel>
 
                             <p:outputLabel for="guests" value="Invited users:"></p:outputLabel>
@@ -114,7 +114,7 @@
             </p:layoutUnit>
 
             <p:layoutUnit position="east" header="Notifications" size="200">
-            </p:layoutUnit>    
+            </p:layoutUnit>   
         </p:layout>
     </h:body>
 </html>
