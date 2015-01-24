@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
 /**
@@ -43,11 +45,23 @@ public class CreateEventBean {
     }
 
     /**
-     * Create the event
+     * Create the event while checking against previous schedule.
      *
-     * @return the personal page of the user
+     * @return the personal page of the user if the event was created successfully, it will reload the page if there was an error
      */
     public String createEvent() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        if (event.getEndingTime().before(event.getStartingTime())) {
+            context.addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                            "An event cannot end before is started.", "Event creation failed."));
+            return null;
+        } else if (um.userIsAlreadyBusy(event)) {
+            context.addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                            "You already have a scheduled event overlapping with this one.", "Event creation failed."));
+            return null;
+        }
         addGuests();
         evm.saveEvent(event);
         return "/personalPages/personalPage?faces-redirect=true";
