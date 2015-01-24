@@ -8,6 +8,7 @@ package it.polimi.se2.meteocal.entity;
 import it.polimi.se2.meteocal.enums.NotificationStatus;
 import it.polimi.se2.meteocal.enums.NotificationType;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -54,6 +55,18 @@ public class Notification implements Serializable {
      */
     @ManyToMany(mappedBy = "generatedNotifications")
     private Set<Event> generatingEvent;
+    
+    /*
+    Methods
+    */
+    
+    /**
+     * Add the event that generated the notification
+     * @param e the event
+     */
+    public void addGeneratingEvent(Event e) {
+        this.getGeneratingEvent().add(e);
+    }
 
     public Long getId() {
         return id;
@@ -88,6 +101,9 @@ public class Notification implements Serializable {
     }
 
     public Set<Event> getGeneratingEvent() {
+        if (generatingEvent == null) {
+            generatingEvent = new HashSet<>();
+        }
         return generatingEvent;
     }
 
