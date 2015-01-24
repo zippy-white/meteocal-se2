@@ -126,6 +126,10 @@ public class User implements Serializable {
         this.getInvitedToEvents().remove(e);
     }
     
+    public void removeNotification(Notification n) {
+        this.getNotifications().remove(n);
+    }
+    
     /*
     Getters and Setters
     */
