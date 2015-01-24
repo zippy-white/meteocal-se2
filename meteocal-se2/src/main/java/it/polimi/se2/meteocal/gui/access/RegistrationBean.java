@@ -9,6 +9,8 @@ import it.polimi.se2.meteocal.entity.User;
 import it.polimi.se2.meteocal.manager.UserManager;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -41,6 +43,13 @@ public class RegistrationBean {
      * @return the user's personal page if the registration is successful
      */
     public String register() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        if (um.findUserByName(username.toLowerCase()) != null) {
+            context.addMessage(null, 
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                            "This username is already taken. Usernames are case insensitive.", "Registration failed."));
+            return null;
+        }
         getUser();
         user.setUsername(username);
         user.setPassword(password);
