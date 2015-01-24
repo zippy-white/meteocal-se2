@@ -22,6 +22,7 @@
 
             <p:layoutUnit position="center" size="175" collapsible="false">
                 <p:schedule id="calendar" view="month" aspectRatio="2.2"
+                            widgetVar="scheduleWidget"
                             draggable="false" resizable="false"
                             rightHeaderTemplate=""
                             timeZone="GMT+1"
@@ -32,76 +33,83 @@
                 </p:schedule>
 
                 <p:dialog widgetVar="eventDialog" header="Event Details" showEffect="clip" hideEffect="clip" resizable="false">
-                    <h:panelGrid id="eventDetails" columns="2">
+                    <h:form id="eventDetails">
+                        <h:panelGrid  columns="2">
 
-                        <p:outputLabel for="name" value="Name:"></p:outputLabel>
-                        <p:inputText id="nameEdit"
-                                     label="Name"
-                                     required="true"
-                                     value="#{scheduleBean.event.name}" rendered="#{scheduleBean.isViewerOwner}">
-                            <f:validateLength minimum="2" maximum="20"></f:validateLength>
-                        </p:inputText>
-                        <p:outputLabel id="name" value="#{scheduleBean.event.name}" rendered="#{!scheduleBean.isViewerOwner}"/>
-
-                        <p:outputLabel for="description" value="Description:"></p:outputLabel>
-                        <h:panelGroup id="descEditPanel" rendered="#{scheduleBean.isViewerOwner}">
-                            <p:inputTextarea id="descriptionEdit"
+                            <p:outputLabel for="nameEdit" value="Name:" rendered="#{scheduleBean.isViewerOwner}"/>
+                            <p:inputText id="nameEdit"
+                                         label="Name"
+                                         required="true"
+                                         rendered="#{scheduleBean.isViewerOwner}"
+                                         value="#{scheduleBean.event.name}">
+                                <f:validateLength minimum="2" maximum="20"></f:validateLength>
+                            </p:inputText>
+                            
+                            <p:outputLabel for="descEdit" value="Description:" rendered="#{scheduleBean.isViewerOwner}"/>
+                            <p:inputTextarea id="descEdit"
                                              rows="3" cols="30" counter="display" 
                                              maxlength="140"
+                                             rendered="#{scheduleBean.isViewerOwner}"
                                              value="#{scheduleBean.event.description}"
                                              counterTemplate="{0} characters remaining."/>
-                            <br/>
-                            <h:outputText id="display" />
-                        </h:panelGroup>
-                        <p:outputLabel id="description" value="#{scheduleBean.event.description}" rendered="#{!scheduleBean.isViewerOwner}"/>
+                            <h:panelGroup></h:panelGroup>
+                            <h:outputText id="display" rendered="#{scheduleBean.isViewerOwner}"/>
 
-                        <p:outputLabel for="type" value="Type:"></p:outputLabel>
-                        <p:outputLabel id="type" value="#{scheduleBean.event.type}"></p:outputLabel>
+                            <p:outputLabel for="name" value="Name:" rendered="#{!scheduleBean.isViewerOwner}"></p:outputLabel>
+                            <p:outputLabel id="name" value="#{scheduleBean.event.name}" rendered="#{!scheduleBean.isViewerOwner}"/>
 
-                        <p:outputLabel for="location" value="Location:"></p:outputLabel>
-                        <p:outputLabel id="location" value="#{scheduleBean.event.location}"></p:outputLabel>
+                            <p:outputLabel for="description" value="Description:" rendered="#{!scheduleBean.isViewerOwner}"></p:outputLabel>
+                            <p:outputLabel id="description" value="#{scheduleBean.event.description}" rendered="#{!scheduleBean.isViewerOwner}"/>
 
-                        <p:outputLabel for="date" value="Date:" />
-                        <p:outputLabel id="date" value="#{scheduleBean.event.eventDate}">
-                            <f:convertDateTime pattern="dd/MM/yyyy" />
-                        </p:outputLabel>
+                            <p:outputLabel for="type" value="Type:"></p:outputLabel>
+                            <p:outputLabel id="type" value="#{scheduleBean.event.type}"></p:outputLabel>
 
-                        <p:outputLabel for="startingTime" value="Starting time:" />
-                        <p:outputLabel id="startingTime" value="#{scheduleBean.event.startingTime}">
-                            <f:convertDateTime pattern="HH:mm a" />
-                        </p:outputLabel>
+                            <p:outputLabel for="location" value="Location:"></p:outputLabel>
+                            <p:outputLabel id="location" value="#{scheduleBean.event.location}"></p:outputLabel>
 
-                        <p:outputLabel for="endingTime" value="Ending time:" />
-                        <p:outputLabel id="endingTime" value="#{scheduleBean.event.endingTime}">
-                            <f:convertDateTime pattern="HH:mm a" />
-                        </p:outputLabel>
+                            <p:outputLabel for="date" value="Date:" />
+                            <p:outputLabel id="date" value="#{scheduleBean.event.eventDate}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </p:outputLabel>
 
-                        <p:outputLabel for="guests" value="Invited users:"></p:outputLabel>
-                        <p:outputLabel id="guests" value="#{scheduleBean.event.invitedUsers}"></p:outputLabel>
+                            <p:outputLabel for="startingTime" value="Starting time:" />
+                            <p:outputLabel id="startingTime" value="#{scheduleBean.event.startingTime}">
+                                <f:convertDateTime pattern="HH:mm a" />
+                            </p:outputLabel>
 
-                        <p:outputLabel for="participants" value="Participants:"></p:outputLabel>
-                        <p:outputLabel id="participants" value="#{scheduleBean.event.attendingUsers}"></p:outputLabel>
+                            <p:outputLabel for="endingTime" value="Ending time:" />
+                            <p:outputLabel id="endingTime" value="#{scheduleBean.event.endingTime}">
+                                <f:convertDateTime pattern="HH:mm a" />
+                            </p:outputLabel>
 
-                        <p:outputLabel for="weather" value="Weather:"></p:outputLabel>
-                        <p:outputLabel id="weather" value="#{scheduleBean.event.weather}"></p:outputLabel>
+                            <p:outputLabel for="guests" value="Invited users:"></p:outputLabel>
+                            <p:outputLabel id="guests" value="#{scheduleBean.event.invitedUsers}"></p:outputLabel>
 
-                        <p:commandButton id="updateButton" value="Update" 
-                                         rendered="#{scheduleBean.isViewerOwner}"
-                                         actionListener="#{scheduleBean.updateEvent}" 
-                                         oncomplete="PF('calendar').update();PF('eventDialog').hide();" />
-                        <p:commandButton id="deleteButton" value="Delete" 
-                                         rendered="#{scheduleBean.isViewerOwner}"
-                                         actionListener="#{scheduleBean.deleteEvent}" 
-                                         oncomplete="PF('calendar').update();PF('eventDialog').hide();">
-                            <p:confirm header="Confirm event deletion" message="This operation cannot be undone!"/>
-                        </p:commandButton>
+                            <p:outputLabel for="participants" value="Participants:"></p:outputLabel>
+                            <p:outputLabel id="participants" value="#{scheduleBean.event.attendingUsers}"></p:outputLabel>
 
-                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                            <p:commandButton value="Delete!" type="button"/>
-                            <p:commandButton value="Cancel" type="button" />
-                        </p:confirmDialog>
+                            <p:outputLabel for="weather" value="Weather:"></p:outputLabel>
+                            <p:outputLabel id="weather" value="#{scheduleBean.event.weather}"></p:outputLabel>
 
-                    </h:panelGrid>
+                            <p:commandButton id="submit" value="Update"
+                                             rendered="#{scheduleBean.isViewerOwner}"
+                                             actionListener="#{scheduleBean.updateEvent()}"
+                                             oncomplete="PF('scheduleWidget').update();PF('eventDialog').hide();" />
+
+                            <p:commandButton id="deleteButton" value="Delete" 
+                                             rendered="#{scheduleBean.isViewerOwner}"
+                                             actionListener="#{scheduleBean.deleteEvent()}"
+                                             oncomplete="PF('scheduleWidget').update();PF('eventDialog').hide();">
+                                <p:confirm header="Confirm event deletion" message="This operation cannot be undone!"/>
+                            </p:commandButton>
+
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                <p:commandButton value="Delete!" styleClass="ui-confirmdialog-yes" type="button"/>
+                                <p:commandButton value="Cancel" styleClass="ui-confirmdialog-no" type="button" />
+                            </p:confirmDialog>
+
+                        </h:panelGrid>
+                    </h:form>
                 </p:dialog>
             </p:layoutUnit>
 
