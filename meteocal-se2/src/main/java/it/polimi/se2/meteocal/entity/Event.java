@@ -267,7 +267,7 @@ public class Event implements Serializable {
 
     @Override
     public String toString() {
-        return "it.polimi.se2.meteocal.entity.Event[ id=" + id + " ]";
+        return "Id: " + id + "Name: " + name;
     }
 
 }
