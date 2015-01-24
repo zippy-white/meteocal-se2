@@ -62,7 +62,7 @@ public class User implements Serializable {
     /**
      * Events created by one user
      */
-    @OneToMany(mappedBy = "owner")
+    @OneToMany(mappedBy = "owner", orphanRemoval = true)
     private Set<Event> createdEvents;
 
     /**
@@ -112,6 +112,18 @@ public class User implements Serializable {
     
     public void addNotification(Notification n) {
         this.getNotifications().add(n);
+    }
+    
+    public void removeCreatedEvent(Event e) {
+        this.getCreatedEvents().remove(e);
+    }
+    
+    public void removeAttendingEvent(Event e) {
+        this.getAttendingEvents().remove(e);
+    }
+    
+    public void removeInvitedEvent(Event e) {
+        this.getInvitedToEvents().remove(e);
     }
     
     /*
