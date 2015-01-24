@@ -86,6 +86,7 @@ public class EventManager {
         //Remove event from invited and attending users side of the relationship
         removeInvitedUsers(e);
         removeAttendingUsers(e);
+        removeGeneratedNotifications(e);
         System.out.println("Event manager has deleted the event");
     }
     
@@ -126,6 +127,13 @@ public class EventManager {
         //Build relationships
         e.addGeneratedNotification(n);
         user.addNotification(n);
+    }
+
+    private void removeGeneratedNotifications(Event e) {
+        for (Notification n: e.getGeneratedNotifications()) {
+            n.getRecipient().removeNotification(n);
+            nm.removeNotification(n);
+        }
     }
     
 }
