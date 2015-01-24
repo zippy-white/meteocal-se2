@@ -9,6 +9,8 @@ import it.polimi.se2.meteocal.entity.Event;
 import it.polimi.se2.meteocal.entity.Group;
 import it.polimi.se2.meteocal.entity.User;
 import it.polimi.se2.meteocal.utilities.DateHelper;
+import it.polimi.se2.meteocal.utilities.TimeWindow;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.Resource;
@@ -107,6 +109,33 @@ public class UserManager {
         } catch (NoResultException e) {
             return null;
         }
+    }
+
+    /**
+     * Check if a user has already some events scheduled at the time that event
+     * will take place.
+     *
+     * @param event the event we want to schedule
+     * @return true if the user has already something scheduled that overlaps
+     * with the event, false if the user is free to attend the event
+     */
+    public boolean userIsAlreadyBusy(Event event) {
+        //Build the time window for the event we want to create
+        Date start = DateHelper.buildDate(event.getEventDate(), event.getStartingTime());
+        Date end = DateHelper.buildDate(event.getEventDate(), event.getEndingTime());
+        TimeWindow tw = new TimeWindow(start, end);
+        //Check for overlapping against all the other events
+        for (Event e : getLoggedUser().getAttendingEvents()) {
+            Date ste = DateHelper.buildDate(e.getEventDate(), e.getStartingTime());
+            Date ene = DateHelper.buildDate(e.getEventDate(), e.getEndingTime());
+            TimeWindow t = new TimeWindow(ste, ene);
+            if (DateHelper.overlaps(tw, t)) {
+                //One event overlaps with the event to be scheduled
+                return true;
+            }
+        }
+        //No overlapping found
+        return false;
     }
 
 }
