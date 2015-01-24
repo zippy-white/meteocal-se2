@@ -46,7 +46,8 @@ public class LoginBean {
             request.login(this.username, this.password);
             return "/personalPages/personalPage";
         } catch (ServletException e) {
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login failed.\nAnother user may still be logged in.", "Login failed."));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login failed.", "Login failed."));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Try changing the username or using another browser/session.", "Login failed."));
             logger.log(Level.SEVERE, "Login Failed");
             return null;
         }
