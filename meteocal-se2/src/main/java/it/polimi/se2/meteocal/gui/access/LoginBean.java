@@ -44,7 +44,7 @@ public class LoginBean {
 
         try {
             request.login(this.username.toLowerCase(), this.password);
-            return "/personalPages/personalPage";
+            return "/personalPages/personalPage?faces-redirect=true";
         } catch (ServletException e) {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login failed.", "Login failed."));
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Try changing the username or using another browser/session.", "Login failed."));
