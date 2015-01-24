@@ -43,7 +43,7 @@ public class LoginBean {
         HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
 
         try {
-            request.login(this.username, this.password);
+            request.login(this.username.toLowerCase(), this.password);
             return "/personalPages/personalPage";
         } catch (ServletException e) {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login failed.", "Login failed."));
