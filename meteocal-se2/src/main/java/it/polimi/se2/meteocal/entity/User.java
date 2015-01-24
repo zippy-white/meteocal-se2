@@ -194,4 +194,9 @@ public class User implements Serializable {
         this.groupName = groupName;
     }
 
+    @Override
+    public String toString() {
+        return username;
+    }
+
 }
