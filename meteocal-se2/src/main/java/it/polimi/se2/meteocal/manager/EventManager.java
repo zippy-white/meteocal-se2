@@ -54,7 +54,10 @@ public class EventManager {
      * @param e the event to update
      */
     public void updateEvent(Event e) {
+        System.out.println("Event manager is updating event: " + e);
         em.merge(e);
+        em.flush();
+        System.out.println("Event manager has updated event: " + e);
     }
 
     /**
@@ -63,13 +66,38 @@ public class EventManager {
      * @param e the event to remove
      */
     public void removeEvent(Event e) {
-        em.remove(e);
+        System.out.println("Event manager is removing event: " + e);
+        //Remove the event from the events created by the owner
+        e.getOwner().removeCreatedEvent(e);
+        //Remove the event (merge is necessary for the obj to become managed)
+        em.remove(em.merge(e));
+        em.flush();
+        //Remove event from invited and attending users side of the relationship
+        removeInvitedUsers(e);
+        removeAttendingUsers(e);
+        System.out.println("Event manager has deleted the event");
     }
 
     private void inviteUsers(Event event) {
         for (User u : event.getInvitedUsers()) {
-            System.out.println(">>>INVITING USER " + u.getUsername() + " TO EVENT " + event.getName());
+            System.out.println("INVITING USER " + u.getUsername() + " TO EVENT " + event.getName());
             u.addInvitedToEvent(event);
+            um.updateUser(u);
+        }
+    }
+    
+    private void removeInvitedUsers(Event e) {
+        for (User u: e.getInvitedUsers()) {
+            System.out.println("REMOVING INVITED EVENT FOR " + u.getUsername());
+            u.removeInvitedEvent(e);
+            um.updateUser(u);
+        }
+    }
+    
+    private void removeAttendingUsers(Event e) {
+        for (User u: e.getAttendingUsers()) {
+            System.out.println("REMOVING ATTENDING EVENT FOR " + u.getUsername());
+            u.removeAttendingEvent(e);
             um.updateUser(u);
         }
     }
