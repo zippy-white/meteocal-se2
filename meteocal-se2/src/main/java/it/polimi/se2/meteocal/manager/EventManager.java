@@ -6,27 +6,37 @@
 package it.polimi.se2.meteocal.manager;
 
 import it.polimi.se2.meteocal.entity.Event;
+import it.polimi.se2.meteocal.entity.Notification;
 import it.polimi.se2.meteocal.entity.User;
+import it.polimi.se2.meteocal.enums.NotificationStatus;
+import it.polimi.se2.meteocal.enums.NotificationType;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 /**
+ * Manages the event lifecycle and the necessary interactions with other
+ * entities
  *
  * @author edo
  */
 @Stateless
 public class EventManager {
-
+    
     @PersistenceContext
     private EntityManager em;
-
+    
     @EJB
     private UserManager um;
+    
+    @EJB
+    private NotificationManager nm;
 
     /**
      * Save the event in the DB
+     * Create relationships with owner,
+     * invite invited users and send notifications
      *
      * @param event the event to save
      */
@@ -48,9 +58,10 @@ public class EventManager {
         //Invite Users. This has to be after event persist for transactions to work!
         inviteUsers(event);
     }
-    
+
     /**
      * Update an event
+     *
      * @param e the event to update
      */
     public void updateEvent(Event e) {
@@ -61,8 +72,8 @@ public class EventManager {
     }
 
     /**
-     * Remove an event
-     *
+     * Remove an event, remove relationships with users
+     *and delete notifications
      * @param e the event to remove
      */
     public void removeEvent(Event e) {
@@ -77,17 +88,18 @@ public class EventManager {
         removeAttendingUsers(e);
         System.out.println("Event manager has deleted the event");
     }
-
+    
     private void inviteUsers(Event event) {
         for (User u : event.getInvitedUsers()) {
             System.out.println("INVITING USER " + u.getUsername() + " TO EVENT " + event.getName());
             u.addInvitedToEvent(event);
+            sendNotification(u, NotificationType.INVITE, event);
             um.updateUser(u);
         }
     }
     
     private void removeInvitedUsers(Event e) {
-        for (User u: e.getInvitedUsers()) {
+        for (User u : e.getInvitedUsers()) {
             System.out.println("REMOVING INVITED EVENT FOR " + u.getUsername());
             u.removeInvitedEvent(e);
             um.updateUser(u);
@@ -95,11 +107,25 @@ public class EventManager {
     }
     
     private void removeAttendingUsers(Event e) {
-        for (User u: e.getAttendingUsers()) {
+        for (User u : e.getAttendingUsers()) {
             System.out.println("REMOVING ATTENDING EVENT FOR " + u.getUsername());
             u.removeAttendingEvent(e);
             um.updateUser(u);
         }
     }
-
+    
+    private void sendNotification(User user, NotificationType notificationType, Event e) {
+        Notification n = new Notification();
+        //All sent notifications are PENDING until read/accepted
+        n.setStatus(NotificationStatus.PENDING);
+        n.setType(notificationType);
+        n.setRecipient(user);
+        n.addGeneratingEvent(e);
+        //Save the notification
+        nm.saveNotification(n);
+        //Build relationships
+        e.addGeneratedNotification(n);
+        user.addNotification(n);
+    }
+    
 }
