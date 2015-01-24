@@ -26,7 +26,9 @@
                             rightHeaderTemplate=""
                             timeZone="GMT+1"
                             value="#{scheduleBean.eventModel}">
-                    <p:ajax event="eventSelect" listener="#{scheduleBean.onEventSelect}" update="eventDetails" oncomplete="PF('eventDialog').show()"/>
+                    <p:ajax event="eventSelect" listener="#{scheduleBean.onEventSelect}" 
+                            update="eventDetails" 
+                            oncomplete="PF('eventDialog').show()"/>
                 </p:schedule>
 
                 <p:dialog widgetVar="eventDialog" header="Event Details" showEffect="clip" hideEffect="clip" resizable="false">
@@ -42,13 +44,13 @@
                         <p:outputLabel id="name" value="#{scheduleBean.event.name}" rendered="#{!scheduleBean.isViewerOwner}"/>
 
                         <p:outputLabel for="description" value="Description:"></p:outputLabel>
-                        <h:panelGroup rendered="#{scheduleBean.isViewerOwner}">
+                        <h:panelGroup id="descEditPanel" rendered="#{scheduleBean.isViewerOwner}">
                             <p:inputTextarea id="descriptionEdit"
                                              rows="3" cols="30" counter="display" 
                                              maxlength="140"
                                              value="#{scheduleBean.event.description}"
                                              counterTemplate="{0} characters remaining."/>
-                            <h:panelGroup></h:panelGroup>
+                            <br/>
                             <h:outputText id="display" />
                         </h:panelGroup>
                         <p:outputLabel id="description" value="#{scheduleBean.event.description}" rendered="#{!scheduleBean.isViewerOwner}"/>
