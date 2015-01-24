@@ -51,6 +51,7 @@ public class UserManager {
      */
     public void updateUser(User u) {
         em.merge(u);
+        em.flush();
     }
 
     /**
