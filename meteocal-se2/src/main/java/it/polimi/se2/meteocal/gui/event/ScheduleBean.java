@@ -56,6 +56,7 @@ public class ScheduleBean implements Serializable {
         eventsMap = um.getEventsMap();
         scheduleEventsList = new ArrayList<>(eventsMap.keySet());
         eventModel = new DefaultScheduleModel(scheduleEventsList);
+        System.out.println("THERE ARE " + scheduleEventsList.size() + " SCHEDULED EVENTS");
     }
 
     /**
@@ -85,14 +86,18 @@ public class ScheduleBean implements Serializable {
      * Update the event
      */
     public void updateEvent() {
+        System.out.println("Updating event: " + event);
         evm.updateEvent(event);
+        init();
     }
     
     /**
      * Delete the event
      */
     public void deleteEvent() {
+        System.out.println("Deleting event: " + event);
         evm.removeEvent(event);
+        init();
     }
 
     public ScheduleModel getEventModel() {
