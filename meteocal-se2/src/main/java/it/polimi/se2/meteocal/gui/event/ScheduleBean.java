@@ -12,6 +12,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -38,7 +39,9 @@ public class ScheduleBean implements Serializable {
     private List<ScheduleEvent> scheduleEventsList;
 
     private Event event;
-
+    
+    private Boolean isViewerOwner;
+    
     @EJB
     private UserManager um;
     
@@ -62,14 +65,20 @@ public class ScheduleBean implements Serializable {
     public void onEventSelect(SelectEvent selectedEvent) {
         scheduleEvent = (ScheduleEvent) selectedEvent.getObject();
         event = eventsMap.get(scheduleEvent);
+        isViewerOwner = isViewerOwner();
     }
     
     /**
      * Check wether the user viewing the event is the owner of the event
      * @return true if the user viewing the event is the owner, false otherwise
      */
-    public Boolean isViewerOwner() {
-        return um.getLoggedUser() == event.getOwner();
+    private Boolean isViewerOwner() {
+        if (event != null) {
+            Boolean val = Objects.equals(um.getLoggedUser().getId(), event.getOwner().getId());
+            System.out.println("IS USER OWNER? " + val);
+            return val;
+        }
+        return false;
     }
     
     /**
@@ -92,6 +101,10 @@ public class ScheduleBean implements Serializable {
 
     public Event getEvent() {
         return event;
+    }
+
+    public Boolean getIsViewerOwner() {
+        return isViewerOwner;
     }
 
 }
