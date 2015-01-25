@@ -7,6 +7,7 @@ package it.polimi.se2.meteocal.entity;
 
 import it.polimi.se2.meteocal.enums.NotificationStatus;
 import it.polimi.se2.meteocal.enums.NotificationType;
+import it.polimi.se2.meteocal.utilities.DateHelper;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -123,6 +124,24 @@ public class Notification implements Serializable {
             eventName = e.getName();
         }
         return eventName;
+    }
+
+    /**
+     * Get a brief summary of the event associated to the notification
+     *
+     * @return a string that is a brief description of the event associated to
+     * the notification
+     */
+    public String getGeneratingEventDetails() {
+        String eventDetails = null;
+        for (Event e : getGeneratingEvent()) {
+            String eventName = e.getName();
+            String owner = e.getOwner().getUsername();
+            String from = DateHelper.buildDate(e.getEventDate(), e.getStartingTime()).toString();
+            String to = DateHelper.buildDate(e.getEventDate(), e.getEndingTime()).toString();
+            eventDetails = eventName + " by " + owner + " from " + from + " to " + to;
+        }
+        return eventDetails;
     }
 
     @Override
