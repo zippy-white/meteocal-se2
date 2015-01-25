@@ -113,6 +113,14 @@ public class Event implements Serializable {
     }
     
     /**
+     * Remove a user from the invited ones
+     * @param u the user to remove from the invited users
+     */
+    public void removeInvitedUser(User u) {
+        this.getInvitedUsers().remove(u);
+    }
+    
+    /**
      * Add a user to the event's participants
      * @param u the user to add
      */
