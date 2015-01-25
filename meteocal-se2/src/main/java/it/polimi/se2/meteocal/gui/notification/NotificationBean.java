@@ -7,6 +7,7 @@ package it.polimi.se2.meteocal.gui.notification;
 
 import it.polimi.se2.meteocal.entity.Notification;
 import it.polimi.se2.meteocal.enums.NotificationStatus;
+import it.polimi.se2.meteocal.manager.NotificationManager;
 import it.polimi.se2.meteocal.manager.UserManager;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -29,6 +30,8 @@ public class NotificationBean implements Serializable {
 
     @EJB
     private UserManager um;
+    
+    @EJB NotificationManager nm;
 
     private List<Notification> userNotifications;
     private List<NotificationView> pendingNotifications;
@@ -44,15 +47,24 @@ public class NotificationBean implements Serializable {
     }
 
     public void acceptInvite() {
-
+        System.out.println("Accepting invite");
+        Notification n = notificationsMap.get(selectedNotification);
+        n.setStatus(NotificationStatus.ACCEPTED);
+        nm.acceptInvite(n);
     }
 
     public void declineInvite() {
-
+        System.out.println("Declining invite");
+        Notification n = notificationsMap.get(selectedNotification);
+        n.setStatus(NotificationStatus.DECLINED);
+        nm.declineInvite(n);
     }
 
     public void markAsRead() {
-
+        System.out.println("Marking as read");
+        Notification n = notificationsMap.get(selectedNotification);
+        n.setStatus(NotificationStatus.READ);
+        nm.updateNotification(n);
     }
 
     public List<NotificationView> getPendingNotifications() {
