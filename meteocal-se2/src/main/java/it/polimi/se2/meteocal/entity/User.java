@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -68,7 +69,7 @@ public class User implements Serializable {
     /**
      * Events as invitee
      */
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "INVITED_USERS",
             joinColumns = {
@@ -80,7 +81,7 @@ public class User implements Serializable {
     /**
      * Events as participant
      */
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "ATTENDING_USERS",
             joinColumns = {
