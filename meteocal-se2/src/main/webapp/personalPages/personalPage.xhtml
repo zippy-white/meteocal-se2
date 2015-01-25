@@ -145,16 +145,19 @@
                             <p:commandButton id="accept" value="Accept invite"
                                              rendered="#{notificationBean.selectedNotification.isInvite}"
                                              actionListener="#{notificationBean.acceptInvite()}"
+                                             oncomplete="javascript:window.location.reload()"
                                              update="@all"/>
                             <br/>
                             <p:commandButton id="decline" value="Decline invite" 
                                              rendered="#{notificationBean.selectedNotification.isInvite}"
                                              actionListener="#{notificationBean.declineInvite()}"
+                                             oncomplete="javascript:window.location.reload()"
                                              update="@all" />
 
                             <p:commandButton id="markasread" value="Mark as read" 
                                              rendered="#{!notificationBean.selectedNotification.isInvite}"
                                              actionListener="#{notificationBean.markAsRead()}"
+                                             oncomplete="javascript:window.location.reload()"
                                              update="@all"/>
 
                         </h:panelGrid>
