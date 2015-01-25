@@ -42,4 +42,9 @@ public class DateHelper {
                 (one.getStart().after(two.getEnd()) &&
                 one.getEnd().after(two.getEnd())));
     }
+    
+    public static Boolean scheduledInThePast(Date day, Date hour) {
+        Date date = buildDate(day, hour);
+        return date.before(Calendar.getInstance().getTime());
+    }
 }
