@@ -9,6 +9,7 @@ import it.polimi.se2.meteocal.entity.Event;
 import it.polimi.se2.meteocal.enums.EventType;
 import it.polimi.se2.meteocal.manager.EventManager;
 import it.polimi.se2.meteocal.manager.UserManager;
+import it.polimi.se2.meteocal.utilities.DateHelper;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
@@ -55,6 +56,11 @@ public class CreateEventBean {
             context.addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR,
                             "An event cannot end before is started.", "Event creation failed."));
+            return null;
+        } else if (DateHelper.scheduledInThePast(event.getEventDate(), event.getStartingTime())) {
+            context.addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                            "Events cannot be scheduled in the past.", "Event creation failed."));
             return null;
         } else if (um.userIsAlreadyBusy(event)) {
             context.addMessage(null,
