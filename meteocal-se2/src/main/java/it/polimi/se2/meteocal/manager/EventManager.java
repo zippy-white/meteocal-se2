@@ -67,7 +67,7 @@ public class EventManager {
         System.out.println("Event manager is updating event: " + e);
         em.merge(e);
         em.flush();
-        notifyUsers(e);
+        notifyUsers(e, NotificationType.UPDATE);
         System.out.println("Event manager has updated event: " + e);
     }
 
@@ -135,10 +135,13 @@ public class EventManager {
             nm.removeNotification(n);
         }
     }
-    
-    private void notifyUsers(Event e) {
+
+    private void notifyUsers(Event e, NotificationType t) {
         for (User u : e.getAttendingUsers()) {
-            sendNotification(u, NotificationType.UPDATE, e);
+            if (u == e.getOwner() && t == NotificationType.UPDATE) {
+                continue;
+            }
+            sendNotification(u, t, e);
             um.updateUser(u);
         }
     }
