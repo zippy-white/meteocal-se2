@@ -32,17 +32,17 @@ public class NotificationView {
 
     private void buildMessage() {
         if (nt == NotificationType.INVITE) {
-            message = "Invite to the event '" + eventName + "'";
+            message = "Invite to the event '" + eventName + "'.";
             this.details = "You have been invited to the event " + this.details;
         } else if (nt == NotificationType.DELETE) {
-            message = "The event '" + eventName + "' has been deleted";
-            this.details = "The event was canceled and is not in your schedule anymore";
+            message = "An event has been deleted";
+            this.details = "An event that you were going to attend was deleted by its owner.";
         } else if (nt == NotificationType.UPDATE) {
             message = "The event '" + eventName + "' has been updated";
-            this.details = "Consult the event details in your schedule for more informations";
+            this.details = "Consult the event details in your schedule for more informations.";
         } else if (nt == NotificationType.WEATHER) {
             message = "Weather forecast for the event '" + eventName + "'";
-            this.details = "Consult the event details in your schedule for more informations";
+            this.details = "Consult the event details in your schedule for more informations.";
         }
     }
 
