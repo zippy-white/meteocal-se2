@@ -52,9 +52,9 @@
                                              rendered="#{scheduleBean.isViewerOwner}"
                                              value="#{scheduleBean.event.description}"
                                              counterTemplate="{0} characters remaining."/>
-                            <h:panelGroup></h:panelGroup>
+                            <h:panelGroup rendered="#{scheduleBean.isViewerOwner}"/>
                             <h:outputText id="display" rendered="#{scheduleBean.isViewerOwner}"/>
-
+                            
                             <p:outputLabel for="name" value="Name:" rendered="#{!scheduleBean.isViewerOwner}"></p:outputLabel>
                             <p:outputLabel id="name" value="#{scheduleBean.event.name}" rendered="#{!scheduleBean.isViewerOwner}"/>
 
