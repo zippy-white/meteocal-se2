@@ -144,6 +144,20 @@ public class Notification implements Serializable {
         return eventDetails;
     }
 
+    /**
+     * Get the event that generated the notification
+     *
+     * @return the event that generated the notification if it exists, null
+     * otherwise
+     */
+    public Event getSingleGeneratingEvent() {
+        Event sge = null;
+        for (Event e : getGeneratingEvent()) {
+            sge = e;
+        }
+        return sge;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
