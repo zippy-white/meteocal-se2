@@ -94,12 +94,12 @@
                             <p:commandButton id="submit" value="Update"
                                              rendered="#{scheduleBean.isViewerOwner}"
                                              actionListener="#{scheduleBean.updateEvent()}"
-                                             oncomplete="PF('scheduleWidget').update();PF('eventDialog').hide();" />
+                                             oncomplete="PF('scheduleWidget').update();PF('eventDialog').hide();javascript:window.location.reload()" />
 
                             <p:commandButton id="deleteButton" value="Delete" 
                                              rendered="#{scheduleBean.isViewerOwner}"
                                              actionListener="#{scheduleBean.deleteEvent()}"
-                                             oncomplete="PF('scheduleWidget').update();PF('eventDialog').hide();">
+                                             oncomplete="PF('scheduleWidget').update();PF('eventDialog').hide();javascript:window.location.reload()">
                                 <p:confirm header="Confirm event deletion" message="This operation cannot be undone!"/>
                             </p:commandButton>
 
