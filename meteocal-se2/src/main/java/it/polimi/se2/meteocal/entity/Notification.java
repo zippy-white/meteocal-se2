@@ -55,13 +55,13 @@ public class Notification implements Serializable {
      */
     @ManyToMany(mappedBy = "generatedNotifications")
     private Set<Event> generatingEvent;
-    
+
     /*
-    Methods
-    */
-    
+     Methods
+     */
     /**
      * Add the event that generated the notification
+     *
      * @param e the event
      */
     public void addGeneratingEvent(Event e) {
@@ -109,6 +109,20 @@ public class Notification implements Serializable {
 
     public void setGeneratingEvent(Set<Event> generatingEvent) {
         this.generatingEvent = generatingEvent;
+    }
+
+    /**
+     * Get the name of the event that generated the notification
+     *
+     * @return the event name if an event generated the notification, null
+     * otherwise
+     */
+    public String getGeneratingEventName() {
+        String eventName = null;
+        for (Event e : getGeneratingEvent()) {
+            eventName = e.getName();
+        }
+        return eventName;
     }
 
     @Override
