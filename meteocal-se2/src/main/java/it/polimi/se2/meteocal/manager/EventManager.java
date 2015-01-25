@@ -87,6 +87,8 @@ public class EventManager {
         removeInvitedUsers(e);
         removeAttendingUsers(e);
         removeGeneratedNotifications(e);
+        //Notify users of deletion.
+        notifyUsers(e, NotificationType.DELETE);
         System.out.println("Event manager has deleted the event");
     }
 
@@ -125,7 +127,9 @@ public class EventManager {
         //Save the notification
         nm.saveNotification(n);
         //Build relationships
-        e.addGeneratedNotification(n);
+        if (e != null) {
+            e.addGeneratedNotification(n);
+        }
         user.addNotification(n);
     }
 
@@ -138,10 +142,16 @@ public class EventManager {
 
     private void notifyUsers(Event e, NotificationType t) {
         for (User u : e.getAttendingUsers()) {
-            if (u == e.getOwner() && t == NotificationType.UPDATE) {
+            //The owner knows what he has done
+            if (u == e.getOwner() && (t == NotificationType.UPDATE || t == NotificationType.DELETE)) {
                 continue;
             }
-            sendNotification(u, t, e);
+            if (t == NotificationType.DELETE) {
+                //We cannot link the event in the notification if it's going to be removed
+                sendNotification(u, t, null);
+            } else if (t == NotificationType.UPDATE) {
+                sendNotification(u, t, e);
+            }
             um.updateUser(u);
         }
     }
