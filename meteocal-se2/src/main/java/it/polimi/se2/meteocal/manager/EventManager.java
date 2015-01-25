@@ -23,20 +23,19 @@ import javax.persistence.PersistenceContext;
  */
 @Stateless
 public class EventManager {
-    
+
     @PersistenceContext
     private EntityManager em;
-    
+
     @EJB
     private UserManager um;
-    
+
     @EJB
     private NotificationManager nm;
 
     /**
-     * Save the event in the DB
-     * Create relationships with owner,
-     * invite invited users and send notifications
+     * Save the event in the DB Create relationships with owner, invite invited
+     * users and send notifications
      *
      * @param event the event to save
      */
@@ -68,12 +67,13 @@ public class EventManager {
         System.out.println("Event manager is updating event: " + e);
         em.merge(e);
         em.flush();
+        notifyUsers(e);
         System.out.println("Event manager has updated event: " + e);
     }
 
     /**
-     * Remove an event, remove relationships with users
-     *and delete notifications
+     * Remove an event, remove relationships with users and delete notifications
+     *
      * @param e the event to remove
      */
     public void removeEvent(Event e) {
@@ -89,7 +89,7 @@ public class EventManager {
         removeGeneratedNotifications(e);
         System.out.println("Event manager has deleted the event");
     }
-    
+
     private void inviteUsers(Event event) {
         for (User u : event.getInvitedUsers()) {
             System.out.println("INVITING USER " + u.getUsername() + " TO EVENT " + event.getName());
@@ -98,7 +98,7 @@ public class EventManager {
             um.updateUser(u);
         }
     }
-    
+
     private void removeInvitedUsers(Event e) {
         for (User u : e.getInvitedUsers()) {
             System.out.println("REMOVING INVITED EVENT FOR " + u.getUsername());
@@ -106,7 +106,7 @@ public class EventManager {
             um.updateUser(u);
         }
     }
-    
+
     private void removeAttendingUsers(Event e) {
         for (User u : e.getAttendingUsers()) {
             System.out.println("REMOVING ATTENDING EVENT FOR " + u.getUsername());
@@ -114,7 +114,7 @@ public class EventManager {
             um.updateUser(u);
         }
     }
-    
+
     private void sendNotification(User user, NotificationType notificationType, Event e) {
         Notification n = new Notification();
         //All sent notifications are PENDING until read/accepted
@@ -130,10 +130,17 @@ public class EventManager {
     }
 
     private void removeGeneratedNotifications(Event e) {
-        for (Notification n: e.getGeneratedNotifications()) {
+        for (Notification n : e.getGeneratedNotifications()) {
             n.getRecipient().removeNotification(n);
             nm.removeNotification(n);
         }
     }
     
+    private void notifyUsers(Event e) {
+        for (User u : e.getAttendingUsers()) {
+            sendNotification(u, NotificationType.UPDATE, e);
+            um.updateUser(u);
+        }
+    }
+
 }
