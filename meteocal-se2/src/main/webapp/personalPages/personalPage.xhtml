@@ -44,7 +44,7 @@
                                          value="#{scheduleBean.event.name}">
                                 <f:validateLength minimum="2" maximum="20"></f:validateLength>
                             </p:inputText>
-                            
+
                             <p:outputLabel for="descEdit" value="Description:" rendered="#{scheduleBean.isViewerOwner}"/>
                             <p:inputTextarea id="descEdit"
                                              rows="3" cols="30" counter="display" 
@@ -113,7 +113,55 @@
                 </p:dialog>
             </p:layoutUnit>
 
-            <p:layoutUnit position="east" header="Notifications" size="200">
+            <p:layoutUnit position="east" size="200">
+                <h:form id="notificationForm">
+                    <p:dataList 
+                        var="notification"
+                        widgetVar="notificationList"
+                        paginator="true" paginatorAlwaysVisible="false"
+                        itemType="none"
+                        emptyMessage="No new notifications"
+                        value="#{notificationBean.pendingNotifications}">
+                        <f:facet name="header">
+                            Notifications
+                        </f:facet>
+
+                        <p:commandLink 
+                            update=":notificationForm:details"
+                            oncomplete="PF('notificationDialog').show()" title="View Details" styleClass="ui-icon ui-icon-search" style="float:left;margin-right:10px">
+                            <f:setPropertyActionListener value="#{notification}" target="#{notificationBean.selectedNotification}"/>
+                        </p:commandLink>
+                        <p:outputLabel value="#{notification.message}" style="font-size: smaller"/>
+
+                    </p:dataList>
+
+
+                    <p:dialog widgetVar="notificationDialog" header="Details" showEffect="clip" hideEffect="clip" resizable="false">
+                        <p:outputPanel id="details">
+                            <h:panelGrid  columns="2">
+                                
+                                <p:outputLabel value="#{notificationBean.selectedNotification.details}"/>
+                                <br/>
+                                
+                                <p:commandButton id="accept" value="Accept invite"
+                                                 rendered="#{notificationBean.selectedNotification.isInvite}"
+                                                 actionListener="#{notificationBean.acceptInvite()}"
+                                                 oncomplete="PF('notificationList').update();PF('notificationDialog').hide();" />
+                                <br/>
+                                <p:commandButton id="decline" value="Decline invite" 
+                                                 rendered="#{notificationBean.selectedNotification.isInvite}"
+                                                 actionListener="#{notificationBean.declineInvite()}"
+                                                 oncomplete="PF('notificationList').update();PF('notificationDialog').hide();" />
+
+                                <p:commandButton id="markasread" value="Mark as read" 
+                                                 rendered="#{!notificationBean.selectedNotification.isInvite}"
+                                                 actionListener="#{notificationBean.markAsRead()}"
+                                                 oncomplete="PF('notificationList').update();PF('notificationDialog').hide();" />
+
+                            </h:panelGrid>
+                        </p:outputPanel>
+                    </p:dialog>
+                </h:form>
             </p:layoutUnit>   
         </p:layout>
     </h:body>
