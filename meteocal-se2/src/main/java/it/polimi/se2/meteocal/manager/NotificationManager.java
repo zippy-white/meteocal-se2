@@ -5,7 +5,10 @@
  */
 package it.polimi.se2.meteocal.manager;
 
+import it.polimi.se2.meteocal.entity.Event;
 import it.polimi.se2.meteocal.entity.Notification;
+import it.polimi.se2.meteocal.entity.User;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -20,6 +23,12 @@ public class NotificationManager {
 
     @PersistenceContext
     private EntityManager em;
+
+    @EJB
+    private EventManager evm;
+
+    @EJB
+    private UserManager um;
 
     /**
      * Save a new notification in the DB
@@ -47,6 +56,41 @@ public class NotificationManager {
      */
     public void removeNotification(Notification n) {
         em.remove(em.merge(n));
+    }
+
+    /**
+     * Accept an invite and update the user-event realtionships
+     *
+     * @param n the invite that was accepted
+     */
+    public void acceptInvite(Notification n) {
+        System.out.println("Notification manager is accepting invite");
+        updateNotification(n);
+        User attendee = n.getRecipient();
+        Event event = n.getSingleGeneratingEvent();
+        //User - Event relationships
+        attendee.removeInvitedEvent(event);
+        attendee.addAttendingEvent(event);
+        event.removeInvitedUser(attendee);
+        event.addAttendingUser(attendee);
+        um.updateUser(attendee);
+        evm.updateEvent(event);
+    }
+
+    /**
+     * Decline an invite and update the user-event relationships
+     *
+     * @param n the invite to decline
+     */
+    public void declineInvite(Notification n) {
+        System.out.println("Notification manager is declining invite");
+        updateNotification(n);
+        User invitee = n.getRecipient();
+        Event event = n.getSingleGeneratingEvent();
+        invitee.removeInvitedEvent(event);
+        event.removeInvitedUser(invitee);
+        um.updateUser(invitee);
+        evm.updateEvent(event);
     }
 
 }
