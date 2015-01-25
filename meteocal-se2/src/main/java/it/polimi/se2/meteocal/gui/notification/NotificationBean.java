@@ -16,8 +16,10 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 
 /**
  * The JSF managed bean that operates the notification panel
@@ -30,8 +32,9 @@ public class NotificationBean implements Serializable {
 
     @EJB
     private UserManager um;
-    
-    @EJB NotificationManager nm;
+
+    @EJB
+    NotificationManager nm;
 
     private List<Notification> userNotifications;
     private List<NotificationView> pendingNotifications;
@@ -46,11 +49,18 @@ public class NotificationBean implements Serializable {
     }
 
     public void acceptInvite() {
+        FacesContext context = FacesContext.getCurrentInstance();
         System.out.println("Accepting invite");
         Notification n = notificationsMap.get(selectedNotification);
-        n.setStatus(NotificationStatus.ACCEPTED);
-        nm.acceptInvite(n);
-        init();
+        if (um.userIsAlreadyBusy(n.getSingleGeneratingEvent())) {
+            context.addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                            "You already have a scheduled event overlapping with this one.", "Invite not accepted."));
+        } else {
+            n.setStatus(NotificationStatus.ACCEPTED);
+            nm.acceptInvite(n);
+            init();
+        }
     }
 
     public void declineInvite() {
