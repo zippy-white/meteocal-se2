@@ -43,7 +43,6 @@ public class NotificationBean implements Serializable {
         userNotifications = new ArrayList<>(um.getLoggedUser().getNotifications());
         buildViewNotifications();
         pendingNotifications = new ArrayList<>(notificationsMap.keySet());
-
     }
 
     public void acceptInvite() {
@@ -51,6 +50,7 @@ public class NotificationBean implements Serializable {
         Notification n = notificationsMap.get(selectedNotification);
         n.setStatus(NotificationStatus.ACCEPTED);
         nm.acceptInvite(n);
+        init();
     }
 
     public void declineInvite() {
@@ -58,6 +58,7 @@ public class NotificationBean implements Serializable {
         Notification n = notificationsMap.get(selectedNotification);
         n.setStatus(NotificationStatus.DECLINED);
         nm.declineInvite(n);
+        init();
     }
 
     public void markAsRead() {
@@ -65,6 +66,7 @@ public class NotificationBean implements Serializable {
         Notification n = notificationsMap.get(selectedNotification);
         n.setStatus(NotificationStatus.READ);
         nm.updateNotification(n);
+        init();
     }
 
     public List<NotificationView> getPendingNotifications() {
