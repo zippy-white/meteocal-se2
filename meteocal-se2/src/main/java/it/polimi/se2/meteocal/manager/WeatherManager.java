@@ -5,9 +5,17 @@
  */
 package it.polimi.se2.meteocal.manager;
 
+import it.polimi.se2.meteocal.entity.Event;
+import it.polimi.se2.meteocal.enums.EventType;
+import it.polimi.se2.meteocal.utilities.DateHelper;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
+import javax.ejb.EJB;
 import javax.ejb.Schedule;
 import javax.ejb.ScheduleExpression;
 import javax.ejb.Singleton;
@@ -15,7 +23,8 @@ import javax.ejb.Startup;
 import javax.ejb.Timeout;
 import javax.ejb.TimerConfig;
 import javax.ejb.TimerService;
-import net.aksingh.owmjapis.CurrentWeather;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import net.aksingh.owmjapis.DailyForecast;
 import net.aksingh.owmjapis.OpenWeatherMap;
 
@@ -27,14 +36,23 @@ import net.aksingh.owmjapis.OpenWeatherMap;
 @Startup
 @Singleton
 public class WeatherManager {
-    
+
     private static final String api1 = "";
     private static final String api2 = "";
-    private OpenWeatherMap owm;
     
+    private OpenWeatherMap owm;
+    private static final byte days = 5;
+    private List<Event> eventList;
+
+    @PersistenceContext
+    private EntityManager em;
+
+    @EJB
+    private EventManager evm;
+
     @Resource
     private TimerService ts;
-    
+
     @PostConstruct
     private void init() {
         owm = new OpenWeatherMap(api1 + api2);
@@ -43,36 +61,70 @@ public class WeatherManager {
         System.out.println("WeatherManager created");
     }
     
-    @Schedule(minute = "*/10", persistent = false)
+    //Schedule weather check every 10  minutes
+    @Schedule(second = "*", minute = "*/10", hour = "*", persistent = false)
     public void checkWeatherAuto() throws IOException {
-        byte days = 10;
-        DailyForecast df;
-        String city = "Milano";
-        df = owm.dailyForecastByCityName(city, days);
-        
-                
+        Date now = Calendar.getInstance().getTime();
+        System.out.println("Automatic timer expired. Checking weather | Time: " + now);
+        checkEventsWeather();
     }
-    
+
     @Timeout
-    public void checkWeatherProg() {
-        
+    public void checkWeatherProg() throws IOException {
+        Date now = Calendar.getInstance().getTime();
+        System.out.println("Programmatic timer expired. Checking weather | Time: " + now);
+        checkEventsWeather();
     }
-    
-    
-    public static void main(String[] args) throws IOException {
-        
-        
-        // declaring object of "OpenWeatherMap" class
-        OpenWeatherMap owm = new OpenWeatherMap(OpenWeatherMap.Units.METRIC, api1 + api2);
 
-        // getting current weather data for the "London" city
-        CurrentWeather cwd = owm.currentWeatherByCityName("Milano");
+    private List<Event> getActiveEvents() {
+        try {
+            List<Event> el = em.createNamedQuery(Event.findAll, Event.class)
+                    .getResultList();
+            List<Event> copy = new ArrayList<>(el);
+            //Remove events that are not scheduled between today and five days from today
+            for (Event e : el) {
+                if (e.getEventDate().before(DateHelper.getTodaysDate())
+                        || e.getEventDate().after(DateHelper.getDateAfterBaseDate(DateHelper.getTodaysDate(), days))) {
+                    copy.remove(e);
+                }
+            }
+            return copy;
+        } catch (Exception e) {
+            System.out.println("WEATHER_MANAGER: Could not retrieve event list!");
+            System.err.println(e);
+            return null;
+        }
 
-        //printing city name from the retrieved data
-        System.out.println("City: " + cwd.getCityName());
-        //index - Index of Weather instance in the list.
-        System.out.println(cwd.getWeatherInstance(0).getWeatherName());
-        System.out.println(cwd.getRawResponse());
-        
     }
+
+    private void checkEventsWeather() throws IOException {
+        Date today = DateHelper.getTodaysDate();
+        eventList = getActiveEvents();
+        //If we have events to update
+        if (eventList != null) {
+            for (Event e : eventList) {
+                //What is the distance of the event from today
+                int delta = e.getEventDate().compareTo(today);
+                DailyForecast df = owm.dailyForecastByCityName(e.getLocation(), days);
+                //We have meteo data
+                if (df.isValid()) {
+                    //Weather main condition
+                    String weather = df.getForecastInstance(delta).getWeatherInstance(0).getWeatherName();
+                    e.setWeather(weather);
+                    evm.updateEvent(e);
+                    //Is it the case to notify users of bad weather
+                    if (e.getType() == EventType.OUTDOOR && isBadWeather(weather)) {
+                        System.out.println("Bad weather on event: " + e.getName());
+                        evm.notifyBadWeather(e);
+                    }
+                }
+            }
+        }
+    }
+
+    private Boolean isBadWeather(String weather) {
+        //Rain, Snow and Thunderstorm are categorized as bad weather
+        return weather.contains("Rain") || weather.contains("Snow") || weather.contains("Thunderstorm");
+    }
+
 }
