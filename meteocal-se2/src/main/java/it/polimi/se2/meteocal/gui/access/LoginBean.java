@@ -47,7 +47,7 @@ public class LoginBean {
             return "/personalPages/personalPage?faces-redirect=true";
         } catch (ServletException e) {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login failed.", "Login failed."));
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Try changing the username or using another browser/session.", "Login failed."));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Verify the entered credentials or try using another browser/session.", "Login failed."));
             logger.log(Level.SEVERE, "Login Failed");
             return null;
         }
