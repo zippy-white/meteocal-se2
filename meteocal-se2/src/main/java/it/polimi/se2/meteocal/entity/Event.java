@@ -6,7 +6,6 @@
 package it.polimi.se2.meteocal.entity;
 
 import it.polimi.se2.meteocal.enums.EventType;
-import it.polimi.se2.meteocal.enums.WeatherCondition;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
@@ -19,6 +18,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
@@ -28,11 +29,17 @@ import javax.validation.constraints.NotNull;
  *
  * @author edo
  */
-@Entity
+@Entity(name = "EVENT")
+@NamedQueries({
+    @NamedQuery(name = Event.findAll,
+            query = "SELECT e FROM EVENT e")
+})
 public class Event implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
+    public static final String findAll = "findAll";
+    
+    
     /*
      Attributes
      */
@@ -63,7 +70,7 @@ public class Event implements Serializable {
     @Temporal(TemporalType.TIME)
     private Date endingTime;
 
-    private WeatherCondition weather;
+    private String weather;
 
     /*
      Relationships
@@ -220,11 +227,14 @@ public class Event implements Serializable {
         this.endingTime = endingTime;
     }
 
-    public WeatherCondition getWeather() {
+    public String getWeather() {
+        if (weather == null) {
+            return "No weather forecast";
+        }
         return weather;
     }
 
-    public void setWeather(WeatherCondition weather) {
+    public void setWeather(String weather) {
         this.weather = weather;
     }
 
