@@ -3,7 +3,7 @@
   <persistence-unit name="it.polimi_meteocal-se2_war_1.0-SNAPSHOTPU" transaction-type="JTA">
     <jta-data-source>jdbc/meteocal</jta-data-source>
     <properties>
-      <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
+      <property name="javax.persistence.schema-generation.database.action" value="create"/>
       <property name="eclipselink.logging.level" value="FINE"/>
     </properties>
   </persistence-unit>
