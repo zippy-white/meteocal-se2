@@ -67,4 +67,11 @@ public class DateHelper {
         cal.set(Calendar.MILLISECOND, 0);
         return cal.getTime();
     }
+    
+    public static Date getDateAfterBaseDate(Date baseDate, int daysMore) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(baseDate);
+        cal.add(Calendar.DAY_OF_YEAR, daysMore);
+        return cal.getTime();
+    }
 }
