@@ -149,11 +149,20 @@ public class EventManager {
             if (t == NotificationType.DELETE) {
                 //We cannot link the event in the notification if it's going to be removed
                 sendNotification(u, t, null);
-            } else if (t == NotificationType.UPDATE) {
+            } else if (t == NotificationType.UPDATE || t == NotificationType.WEATHER) {
                 sendNotification(u, t, e);
             }
             um.updateUser(u);
         }
+    }
+
+    /**
+     * Alert event's participants of bad weather conditions
+     *
+     * @param e the event
+     */
+    public void notifyBadWeather(Event e) {
+        notifyUsers(e, NotificationType.WEATHER);
     }
 
 }
